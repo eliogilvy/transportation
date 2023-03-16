@@ -114,6 +114,50 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Widget _googleSignIn(BuildContext context) {
+    return Center(
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
+        child: TextButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(
+              const Color.fromARGB(255, 66, 133, 244),
+            ),
+            elevation: MaterialStateProperty.all<double>(5),
+          ),
+          onPressed: () {},
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                height: 40.0,
+                width: 40,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/google_sign_in.png'),
+                    fit: BoxFit.cover,
+                  ),
+                  shape: BoxShape.rectangle,
+                ),
+              ),
+              const SizedBox(
+                width: 24,
+              ),
+              const Text(
+                "Sign in with Google",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontFamily: 'roboto',
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final fire = Provider.of<FireProvider>(context);
@@ -125,10 +169,9 @@ class _LoginPageState extends State<LoginPage> {
         child: Container(
           decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/skyline.jpg'),
-                fit: BoxFit.cover,
-              )
-          ),
+            image: AssetImage('assets/images/skyline.jpg'),
+            fit: BoxFit.cover,
+          )),
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -145,13 +188,14 @@ class _LoginPageState extends State<LoginPage> {
                     _errorMessage(),
                     _submitButton(fire.auth),
                     _loginOrRegisterButton(),
+                    _googleSignIn(context),
                   ],
                 ),
               )
             ],
-            ),
           ),
         ),
+      ),
     );
   }
 }

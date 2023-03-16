@@ -68,6 +68,7 @@ dependencies:
   hive_test: ^1.0.1
   nfc_manager: ^3.2.0
   firebase: ^9.0.3
+  google_sign_in: ^6.0.2
 
 dev_dependencies:
 
@@ -109,6 +110,9 @@ flutter:
     - family: route2
       fonts:
         - asset: assets/fonts/Nunito-Regular.ttf
+    - family: roboto
+      fonts:
+        - asset: assets/fonts/roboto-font.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

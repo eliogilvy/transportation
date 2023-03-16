@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ride_seattle/classes/auth.dart';
 import 'package:ride_seattle/classes/fav_route.dart';
@@ -11,7 +12,7 @@ class FireProvider with ChangeNotifier {
   Auth auth;
 
   CollectionReference<Map<String, dynamic>> fb;
-  var user;
+  User? user;
 
   Stream<QuerySnapshot> routeStream(String routeId) {
     return fb
@@ -21,14 +22,20 @@ class FireProvider with ChangeNotifier {
         .snapshots();
   }
 
-  Stream<List<FavoriteRoute>> get routeList => fb
-      .doc(user!.uid)
-      .collection('routes')
-      .orderBy('route_name')
-      .snapshots()
-      .map((snapshot) => snapshot.docs
-          .map((doc) => FavoriteRoute.fromJson(doc.data()))
-          .toList());
+  Stream<List<FavoriteRoute>> get routeList {
+    if (user != null) {
+      return fb
+          .doc(user!.uid)
+          .collection('routes')
+          .orderBy('route_name')
+          .snapshots()
+          .map((snapshot) => snapshot.docs
+              .map((doc) => FavoriteRoute.fromJson(doc.data()))
+              .toList());
+    } else {
+      return Stream.value([]);
+    }
+  }
 
   Future<void> removeData(String routeId) async {
     var user = auth.currentUser;
