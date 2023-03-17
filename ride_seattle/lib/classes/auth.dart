@@ -52,9 +52,6 @@ class Auth {
 
       // Once signed in, return the UserCredential
       UserCredential c = await firebaseAuth.signInWithCredential(credential);
-      fb.add(
-        {'user': c.user!.uid},
-      );
     } catch (error) {
       print('error $error');
     }

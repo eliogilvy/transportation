@@ -10,31 +10,4 @@ class LocalStorageProvider extends ChangeNotifier {
   LocalStorageProvider(Box<OldStops> h) {
     history = h;
   }
-
-  //List<OldStops> get history async => await _history.all;
-
-  // Future<void> loadData() async {
-  //   _history = favRouteBox.get(0);
-  //   notifyListeners();
-  // }
-  //loadData if exists
-
-  //add a route to favorites
-  // void addStop(String stopId, LatLng coord) {
-  //   _history.add(OldStops(stopId: stopId, coord: coord));
-  //   updateData();
-  // }
-
-  //remove route
-  // void removeRoute(int index) {
-  //   print("ROUTE TRYING TO REMOVE");
-  //   print(favoriteRoutes);
-  //   favoriteRoutes.removeAt(index);
-  //   updateData();
-  // }
-
-  // Future<void> updateData() async {
-  //   _history.put(0, favoriteRoutes);
-  //   notifyListeners();
-  // }
 }
