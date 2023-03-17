@@ -21,23 +21,8 @@ class FavoriteButton extends StatefulWidget {
 class _FavoriteButtonState extends State<FavoriteButton> {
   bool isFavorited = false;
 
-  // Future<void> getData() async {
-  //   var user = Auth().currentUser;
-
-  //   var data = await FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(user!.uid)
-  //       .collection('routes')
-  //       .where('route_id', isEqualTo: widget.routeId)
-  //       .get();
-
-  //   int dataLength = data.docs.length;
-  //   isFavorited = dataLength > 0 ? true : false;
-  // }
-
   @override
   Widget build(BuildContext context) {
-    // final storage = Provider.of<LocalStorageProvider>(context, listen: false);
     final fire = Provider.of<FireProvider>(context);
     Stream<QuerySnapshot> stream = fire.routeStream(widget.routeId);
 

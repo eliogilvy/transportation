@@ -114,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _googleSignIn(BuildContext context) {
+  Widget _googleSignIn(Auth auth) {
     return Center(
       child: Container(
         padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
@@ -125,7 +125,10 @@ class _LoginPageState extends State<LoginPage> {
             ),
             elevation: MaterialStateProperty.all<double>(5),
           ),
-          onPressed: () {},
+          onPressed: () async {
+            await auth.signInWithGoogle();
+            setState(() {});
+          },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -188,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                     _errorMessage(),
                     _submitButton(fire.auth),
                     _loginOrRegisterButton(),
-                    _googleSignIn(context),
+                    _googleSignIn(fire.auth),
                   ],
                 ),
               )

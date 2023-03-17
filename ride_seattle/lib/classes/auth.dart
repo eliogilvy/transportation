@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class Auth {
   Auth({required this.firebaseAuth});
@@ -7,6 +9,8 @@ class Auth {
   User? get currentUser => firebaseAuth.currentUser;
 
   Stream<User?> get authStateChanges => firebaseAuth.authStateChanges();
+  CollectionReference<Map<String, dynamic>> fb =
+      FirebaseFirestore.instance.collection('users');
 
   Future<void> signInWithEmailAndPassword({
     required String email,
@@ -22,6 +26,38 @@ class Auth {
   }) async {
     await firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
+  }
+
+  Future<void> signInWithGoogle() async {
+    print('sign in');
+    GoogleSignIn _googleSignIn = GoogleSignIn(
+      scopes: [
+        'email',
+        'https://www.googleapis.com/auth/contacts.readonly',
+      ],
+    );
+    try {
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      // Once signed in, return the UserCredential
+      UserCredential c = await firebaseAuth.signInWithCredential(credential);
+      fb.add(
+        {'user': c.user!.uid},
+      );
+    } catch (error) {
+      print('error $error');
+    }
   }
 
   Future<void> signOut() async {

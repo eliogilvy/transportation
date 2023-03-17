@@ -54,8 +54,6 @@ class FireProvider with ChangeNotifier {
   }
 
   Future<void> uploadingData(String routeId, String routeName) async {
-    var user = auth.currentUser;
-
     fb
         .doc(user!.uid)
         .collection('routes')

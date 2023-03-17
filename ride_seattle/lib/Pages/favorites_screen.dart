@@ -34,32 +34,6 @@ class _FavoritesState extends State<Favorites> {
           const SizedBox(
             height: 5,
           ),
-
-          Container(
-            margin: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10),
-            height: 200,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
-              image: const DecorationImage(
-                image: AssetImage('assets/images/first_hill_street_car.jpg'),
-                fit: BoxFit.cover
-              ),
-            ),
-            child: Container(
-              margin: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  colors: [
-                    Colors.black.withOpacity(.3),
-                    Colors.black.withOpacity(.1),
-                  ]
-                )
-              ),
-            ),
-          ),
-
           StreamBuilder<List<dynamic>>(
             stream: fire.routeList,
             builder: (context, snapshot) {

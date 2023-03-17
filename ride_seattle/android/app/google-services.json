@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "747121818001-d5uu7rstvic3jngap58chgo12ks9mj4t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ride_seattle",
+            "certificate_hash": "7d29f2bc65c1c737f29ba117aa07d55a2b347601"
+          }
+        },
+        {
           "client_id": "747121818001-mrd331hfbgnlaafdgr02nj19d8969od3.apps.googleusercontent.com",
           "client_type": 3
         }
