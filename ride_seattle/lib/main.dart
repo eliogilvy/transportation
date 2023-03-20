@@ -13,6 +13,7 @@ import 'package:ride_seattle/provider/local_storage_provider.dart';
 import 'package:ride_seattle/provider/route_provider.dart';
 import 'package:ride_seattle/styles/theme.dart';
 import 'Pages/favorites_screen.dart';
+import 'Pages/payment_screen.dart';
 import 'classes/auth.dart';
 import 'provider/state_info.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -73,7 +74,9 @@ final _router = GoRouter(
     GoRoute(
       path: '/history',
       builder: (context, state) => const StopHistory(),
-    )
+    ),
+    GoRoute(path: 
+    '/payment', builder: (context, state) => const PaymentPage(),)
   ],
 );
 
