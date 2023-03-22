@@ -27,7 +27,7 @@ class MarkerSheet extends StatelessWidget {
                       .currentStopInfo!.arrivalAndDeparture.values.isNotEmpty
               ? Column(
                   children: [
-                    RouteName(text: stateInfo.currentStopInfo!.name),
+                    RouteName(stop: stateInfo.currentStopInfo!),
                     ArrivalAndDepartureList(
                       scrollController: scrollController,
                       controller: controller,

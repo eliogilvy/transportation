@@ -10,7 +10,7 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-  final nfc = NFCHelper(nfc: NfcManager.instance);
+  final nfc = NfcHelper(nfc: NfcManager.instance);
   ValueNotifier<dynamic> result = ValueNotifier(null);
   @override
   Widget build(BuildContext context) {

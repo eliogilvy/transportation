@@ -19,6 +19,7 @@ import 'package:ride_seattle/Pages/login_screen.dart';
 import 'package:ride_seattle/Pages/maps_screen.dart';
 import 'package:ride_seattle/Pages/stop_history.dart';
 import 'package:ride_seattle/classes/auth.dart';
+import 'package:ride_seattle/classes/stop.dart';
 import 'package:ride_seattle/main.dart';
 import 'package:ride_seattle/provider/firebase_provider.dart';
 import 'package:ride_seattle/provider/local_storage_provider.dart';
@@ -479,11 +480,21 @@ void main() {
   group('route_name', () {
     testWidgets('route name has correct text', (WidgetTester tester) async {
       //fails need to dependency injection of firebase auth
-      RouteName routeName = const RouteName(text: 'testroute');
+      RouteName routeName = RouteName(
+        stop: Stop(
+            stopId: 'stopId',
+            lat: 1,
+            lon: 2,
+            direction: 'north',
+            name: 'Test stop',
+            code: 'Test code',
+            locationType: 3,
+            routeIds: ['routeId']),
+      );
       await tester.pumpWidget(buildTestableWidget(routeName));
       await tester.pumpAndSettle();
 
-      final fake_route = find.text('testroute');
+      final fake_route = find.text('Test stop');
       expect(fake_route, findsOneWidget);
     });
   });

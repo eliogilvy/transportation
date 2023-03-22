@@ -33,6 +33,7 @@ class StateInfo with ChangeNotifier {
   String? _routeFilter;
   String? lastVehicle;
   TripStatus? vehicleStatus;
+  late GoogleMapController mapController;
 
   Set<Circle> get circles => _circles.values.toSet();
   Set<Marker> get markers => _markers.values.toSet();

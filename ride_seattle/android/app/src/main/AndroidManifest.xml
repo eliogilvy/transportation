@@ -7,8 +7,10 @@
     <uses-permission android:name="android.permission.NFC" />
     <uses-sdk android:minSdkVersion="20"/>
     <uses-feature android:name="android.hardware.nfc" android:required="true" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
    <application
+        android:usesCleartextTraffic="true"
         android:label="ride_seattle"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

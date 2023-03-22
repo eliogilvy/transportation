@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:ride_seattle/widgets/marker_sheet.dart';
+import 'package:ride_seattle/widgets/search_box.dart';
 import '../provider/route_provider.dart';
 import '../provider/state_info.dart';
 import '../widgets/nav_drawer.dart';
@@ -30,6 +31,7 @@ class _MapScreenState extends State<MapScreen> {
       CameraPosition(target: LatLng(47.6219, -122.3517), zoom: 16);
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  bool search = false;
 
   @override
   initState() {
@@ -71,6 +73,14 @@ class _MapScreenState extends State<MapScreen> {
                 },
               ),
         actions: [
+          IconButton(
+              onPressed: () => setState(
+                    () {
+                      
+                      search = true;
+                    },
+                  ),
+              icon: const Icon(Icons.search)),
           IconButton(
             onPressed: () {
               showDialog(
@@ -124,45 +134,61 @@ class _MapScreenState extends State<MapScreen> {
             _backButton = !_backButton;
           });
         },
-        body: Stack(
-          fit: StackFit.expand,
+        body: Column(
           children: [
-            GoogleMap(
-              key: const ValueKey("googleMap"),
-              rotateGesturesEnabled: false,
-              myLocationButtonEnabled: false,
-              myLocationEnabled: true,
-              initialCameraPosition: initialCameraPosition,
-              markers: stateInfo.markers,
-              mapToolbarEnabled: false,
-              //circles: stateInfo.circles,
-              zoomControlsEnabled: false,
-              onMapCreated: (GoogleMapController controller) {
-                if (mounted) {
-                  googleMapController.complete(controller);
-                  controller.setMapStyle(_mapStyle);
-                }
-              },
-              onTap: (argument) {
-                if (mounted) {
-                  stateInfo.showVehicleInfo = false;
-                  stateInfo.showMarkerInfo = false;
-                  stateInfo.removeMarker('current');
-
-                  routeProvider.clearPolylines();
-                  stateInfo.removeMarker(stateInfo.lastVehicle);
-                }
-              },
-              onCameraIdle: () {
-                updateView(stateInfo);
-              },
-              polylines: routeProvider.routePolyLine,
+            search
+                ? Container(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SearchBox(callback: () {
+                      setState(() {
+                        search = false;
+                      });
+                    }),
+                  )
+                : Container(),
+            Expanded(
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  GoogleMap(
+                    key: const ValueKey("googleMap"),
+                    rotateGesturesEnabled: false,
+                    myLocationButtonEnabled: false,
+                    myLocationEnabled: true,
+                    initialCameraPosition: initialCameraPosition,
+                    markers: stateInfo.markers,
+                    mapToolbarEnabled: false,
+                    zoomControlsEnabled: false,
+                    onMapCreated: (GoogleMapController controller) {
+                      if (mounted) {
+                        googleMapController.complete(controller);
+                        controller.setMapStyle(_mapStyle);
+                        stateInfo.mapController = controller;
+                      }
+                    },
+                    onTap: (argument) {
+                      if (mounted) {
+                        stateInfo.showVehicleInfo = false;
+                        stateInfo.showMarkerInfo = false;
+                        stateInfo.removeMarker('current');
+                        routeProvider.clearPolylines();
+                        stateInfo.removeMarker(stateInfo.lastVehicle);
+                        FocusScope.of(context).unfocus();
+                      }
+                    },
+                    onCameraIdle: () {
+                      updateView(stateInfo);
+                    },
+                    polylines: routeProvider.routePolyLine,
+                  ),
+                  stateInfo.showMarkerInfo
+                      ? MarkerSheet(controller: googleMapController)
+                      : stateInfo.showVehicleInfo
+                          ? const VehicleSheet()
+                          : const SizedBox.shrink(),
+                ],
+              ),
             ),
-            stateInfo.showMarkerInfo
-                ? MarkerSheet(controller: googleMapController)
-                : stateInfo.showVehicleInfo
-                    ? const VehicleSheet()
-                    : const SizedBox.shrink(),
           ],
         ),
         floatingActionButton: FloatingActionButton.small(

@@ -1,8 +1,8 @@
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class NFCHelper {
-  NFCHelper({required this.nfc});
+class NfcHelper {
+  NfcHelper({required this.nfc});
 
   NfcManager nfc;
   int count = 0;
