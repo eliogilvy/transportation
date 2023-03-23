@@ -29,6 +29,7 @@ class ItineraryList extends StatelessWidget {
                 style: Theme.of(context).primaryTextTheme.bodySmall,
               ),
               onTap: () {
+                stateInfo.routeFilter = [];
                 routeProvider.clearPolylines();
                 int id = 0;
                 List<LatLng> total = [];
@@ -52,9 +53,12 @@ class ItineraryList extends StatelessWidget {
                   } else {
                     routeProvider.setPolyLines(points,
                         color: Colors.orange, id: id.toString());
+                    print('adding ${leg.routeId}');
+                    stateInfo.routeFilter.add(leg.routeId!);
                   }
                   id++;
                 }
+                stateInfo.updateStops();
                 LatLngBounds bounds = LatLngBounds(
                   southwest: total.reduce((value, element) => LatLng(
                         value.latitude < element.latitude

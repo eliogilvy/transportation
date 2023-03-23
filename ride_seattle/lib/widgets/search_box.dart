@@ -42,7 +42,9 @@ class _SearchBoxState extends State<SearchBox> {
           style: Theme.of(context).primaryTextTheme.bodyMedium,
           decoration: InputDecoration(
             prefixIcon: IconButton(
-              onPressed: () => widget.callback(),
+              onPressed: () {
+                widget.callback();
+              },
               icon: const Icon(Icons.arrow_back),
             ),
             filled: true,
@@ -67,7 +69,10 @@ class _SearchBoxState extends State<SearchBox> {
               itemCount: places.length,
               itemBuilder: ((context, index) {
                 return ListTile(
-                  title: Text(places[index].displayName, overflow: TextOverflow.ellipsis,),
+                  title: Text(
+                    places[index].displayName,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   onTap: () async {
                     if (mounted) {
                       String start =

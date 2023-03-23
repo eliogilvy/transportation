@@ -474,7 +474,7 @@ void main() {
       });
       test('can call getVehicleInfo, can call set route filter', () async {
         await stateInfo!.getVehicleInfo('id');
-        stateInfo!.routeFilter = 'test';
+        stateInfo!.routeFilter = ['test'];
         stateInfo!.updateStops();
         expect(stateInfo!.markers.length, 0);
       });
@@ -581,10 +581,10 @@ void main() {
         expect(arrivalAndDeparture.tripHeadsign, 'UNIVERSITY DISTRICT');
         expect(arrivalAndDeparture.arrivalEnabled, true);
         expect(arrivalAndDeparture.departureEnabled, true);
-        expect(arrivalAndDeparture.scheduledArrivalTime,1291581547000);
-        expect(arrivalAndDeparture.scheduledDepartureTime,1291581547000);
+        expect(arrivalAndDeparture.scheduledArrivalTime, 1291581547000);
+        expect(arrivalAndDeparture.scheduledDepartureTime, 1291581547000);
         expect(arrivalAndDeparture.predicted, true);
-        expect(arrivalAndDeparture.predictedArrivalTime,1291581546000);
+        expect(arrivalAndDeparture.predictedArrivalTime, 1291581546000);
         expect(arrivalAndDeparture.predictedDepartureTime, 1291581546000);
         expect(arrivalAndDeparture.distanceFromStop, 7982.740408789774);
         expect(arrivalAndDeparture.numberOfStopsAway, 31);

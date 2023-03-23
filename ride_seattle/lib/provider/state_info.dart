@@ -33,7 +33,7 @@ class StateInfo with ChangeNotifier {
   bool showVehicleInfo = false;
   bool showTripInfo = false;
   Stop? _currentStopInfo;
-  String? _routeFilter;
+  List<String> routeFilter = [];
   String? lastVehicle;
   TripStatus? vehicleStatus;
   late GoogleMapController mapController;
@@ -122,7 +122,9 @@ class StateInfo with ChangeNotifier {
 
   void updateStops() {
     _markers.clear();
-    _stops.removeWhere((key, value) => !value.routeIds.contains(_routeFilter));
+    _stops.removeWhere((key, value) {
+      return checkLists(value.routeIds.toSet(), routeFilter.toSet());
+    });
     var filepath = 'assets/images/stops/bus-stop.png';
     for (var stop in _stops.values) {
       if (stop.direction != null) {
@@ -164,7 +166,7 @@ class StateInfo with ChangeNotifier {
         .findElements("routeId")
         .map((e) => e.text)
         .toList();
-    if (_routeFilter == null || routeIds.contains(_routeFilter)) {
+    if (routeFilter.isEmpty || !checkLists(routeIds.toSet(), routeFilter.toSet())) {
       _stops[id] = parseStop(stop);
       var filePath = 'assets/images/stops/bus-stop.png';
       if (direction != null) {
@@ -173,6 +175,10 @@ class StateInfo with ChangeNotifier {
       addMarker(id, name, LatLng(lat, lon), getMarkerInfo,
           iconFilepath: filePath);
     }
+  }
+
+  bool checkLists(Set first, Set second) {
+    return first.intersection(second).isEmpty;
   }
 
   Stop parseStop(XmlElement stop) {
@@ -267,10 +273,6 @@ class StateInfo with ChangeNotifier {
         type: type,
         url: url,
         agencyId: agencyId);
-  }
-
-  set routeFilter(String? filter) {
-    _routeFilter = filter;
   }
 
   Future<void> getPosition() async {

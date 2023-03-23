@@ -105,7 +105,7 @@ class _MapScreenState extends State<MapScreen> {
                                 alignment: Alignment.centerRight,
                                 child: IconButton(
                                   onPressed: () {
-                                    stateInfo.routeFilter = null;
+                                    stateInfo.routeFilter = [];
                                     routeProvider.clearPolylines();
                                     if (context.canPop()) context.pop();
                                   },
@@ -132,9 +132,11 @@ class _MapScreenState extends State<MapScreen> {
         key: _scaffoldKey,
         drawer: const NavDrawer(),
         onDrawerChanged: (isOpened) {
-          setState(() {
-            _backButton = !_backButton;
-          });
+          if (mounted) {
+            setState(() {
+              _backButton = !_backButton;
+            });
+          }
         },
         body: Column(
           children: [

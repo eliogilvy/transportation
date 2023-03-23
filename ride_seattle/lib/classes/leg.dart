@@ -13,6 +13,7 @@ class Leg {
   final bool transitLeg;
   final int agencyTimeZoneOffset;
   final bool interlineWithPreviousLeg;
+  String? routeId;
   final LegGeometry legGeometry;
 
   Leg({
@@ -29,9 +30,19 @@ class Leg {
     required this.agencyTimeZoneOffset,
     required this.interlineWithPreviousLeg,
     required this.legGeometry,
+    this.routeId,
   });
 
-  factory Leg.fromJson(Map<String, dynamic> json) => Leg(
+  factory Leg.fromJson(Map<String, dynamic> json) {
+    String? route;
+    if (json['mode'] == 'BUS') {
+      route = json['routeId'];
+      route = route!.replaceFirst(':', '_');
+      print('route $route');
+    } else {
+      route = null;
+    }
+    return Leg(
         startTime: json["startTime"],
         endTime: json["endTime"],
         departureDelay: json["departureDelay"],
@@ -45,5 +56,6 @@ class Leg {
         agencyTimeZoneOffset: json["agencyTimeZoneOffset"],
         interlineWithPreviousLeg: json["interlineWithPreviousLeg"],
         legGeometry: LegGeometry.fromJson(json["legGeometry"]),
-      );
+        routeId: route);
+  }
 }

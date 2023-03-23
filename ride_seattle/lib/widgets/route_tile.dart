@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -42,7 +40,8 @@ class _RouteTileState extends State<RouteTile> {
             onTap: () async {
               List<LatLng> routeStops =
                   await stateInfo.getRoutePolyline(widget.routeId);
-              stateInfo.routeFilter = widget.routeId;
+              stateInfo.routeFilter = [];
+              stateInfo.routeFilter.add(widget.routeId);
               stateInfo.updateStops();
 
               routeProvider.setPolyLines(routeStops);

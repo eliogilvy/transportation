@@ -32,7 +32,8 @@ class RouteList extends StatelessWidget {
                   }
                   return InkWell(
                     onTap: () async {
-                      stateInfo.routeFilter = route.routeId;
+                      stateInfo.routeFilter = [];
+                      stateInfo.routeFilter.add(route.routeId);
                       stateInfo.updateStops();
 
                       routeProvider.setPolyLines(
