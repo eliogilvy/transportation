@@ -19,6 +19,11 @@ class RideSeattleTheme {
           textTheme: ButtonTextTheme.primary,
         ),
         primaryTextTheme: const TextTheme(
+          bodySmall: TextStyle(
+            fontFamily: 'route',
+            fontSize: 14,
+            color: Colors.black,
+          ),
           bodyMedium: TextStyle(
             fontFamily: 'route',
             fontSize: 20,

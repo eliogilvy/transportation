@@ -28,8 +28,11 @@ class _LoadingWidgetState extends State<LoadingWidget> {
   Widget build(BuildContext context) {
     return _loading
         ? const CircularProgressIndicator(
-          key: ValueKey("loader"),
-        )
-        : const Text("No data available, try tapping on the stop again.");
+            key: ValueKey("loader"),
+          )
+        : Text(
+            "No data available, try again.",
+            style: Theme.of(context).primaryTextTheme.bodyMedium,
+          );
   }
 }

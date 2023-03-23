@@ -5,10 +5,12 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart';
 import 'package:ride_seattle/classes/fav_route.dart';
+import 'package:ride_seattle/classes/itinerary.dart';
 import 'package:ride_seattle/classes/old_stops.dart';
 import 'package:ride_seattle/classes/trip_status.dart';
 import 'package:xml/xml.dart';
 import '../OneBusAway/routes.dart';
+import '../classes/plan.dart';
 import '../classes/stop.dart';
 import 'dart:math';
 import 'package:ride_seattle/classes/route.dart' as r;
@@ -29,11 +31,13 @@ class StateInfo with ChangeNotifier {
   final Map<String, Circle> _circles = {};
   bool showMarkerInfo = false;
   bool showVehicleInfo = false;
+  bool showTripInfo = false;
   Stop? _currentStopInfo;
   String? _routeFilter;
   String? lastVehicle;
   TripStatus? vehicleStatus;
   late GoogleMapController mapController;
+  Plan? plan;
 
   Set<Circle> get circles => _circles.values.toSet();
   Set<Marker> get markers => _markers.values.toSet();
@@ -357,6 +361,7 @@ class StateInfo with ChangeNotifier {
 
   Future<void> getVehicleInfo(String id) async {
     showMarkerInfo = false;
+    showTripInfo = false;
     showVehicleInfo = true;
     //await getTripInfo(id);
     notifyListeners();
@@ -364,6 +369,7 @@ class StateInfo with ChangeNotifier {
 
   Future<void> getMarkerInfo(String id) async {
     showVehicleInfo = false;
+    showTripInfo = false;
     showMarkerInfo = true;
     _currentStopInfo = _stops[id]!;
     await _currentStopInfo!.getArrivalAndDeparture(client);

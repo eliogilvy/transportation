@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:ride_seattle/widgets/marker_sheet.dart';
 import 'package:ride_seattle/widgets/search_box.dart';
+import 'package:ride_seattle/widgets/trip_sheet.dart';
 import '../provider/route_provider.dart';
 import '../provider/state_info.dart';
 import '../widgets/nav_drawer.dart';
@@ -49,6 +50,7 @@ class _MapScreenState extends State<MapScreen> {
     final routeProvider = Provider.of<RouteProvider>(context, listen: true);
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
           'Ride Seattle',
@@ -76,7 +78,6 @@ class _MapScreenState extends State<MapScreen> {
           IconButton(
               onPressed: () => setState(
                     () {
-                      
                       search = true;
                     },
                   ),
@@ -127,6 +128,7 @@ class _MapScreenState extends State<MapScreen> {
         ],
       ),
       body: Scaffold(
+        resizeToAvoidBottomInset: false,
         key: _scaffoldKey,
         drawer: const NavDrawer(),
         onDrawerChanged: (isOpened) {
@@ -140,9 +142,11 @@ class _MapScreenState extends State<MapScreen> {
                 ? Container(
                     padding: const EdgeInsets.all(8.0),
                     child: SearchBox(callback: () {
-                      setState(() {
-                        search = false;
-                      });
+                      if (mounted) {
+                        setState(() {
+                          search = false;
+                        });
+                      }
                     }),
                   )
                 : Container(),
@@ -170,6 +174,7 @@ class _MapScreenState extends State<MapScreen> {
                       if (mounted) {
                         stateInfo.showVehicleInfo = false;
                         stateInfo.showMarkerInfo = false;
+                        stateInfo.showTripInfo = false;
                         stateInfo.removeMarker('current');
                         routeProvider.clearPolylines();
                         stateInfo.removeMarker(stateInfo.lastVehicle);
@@ -185,7 +190,17 @@ class _MapScreenState extends State<MapScreen> {
                       ? MarkerSheet(controller: googleMapController)
                       : stateInfo.showVehicleInfo
                           ? const VehicleSheet()
-                          : const SizedBox.shrink(),
+                          : stateInfo.showTripInfo
+                              ? TripSheet(
+                                  callback: () {
+                                    if (mounted) {
+                                      setState(() {
+                                        stateInfo.showTripInfo = false;
+                                      });
+                                    }
+                                  },
+                                )
+                              : const SizedBox.shrink(),
                 ],
               ),
             ),

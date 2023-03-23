@@ -7,6 +7,7 @@ import 'package:ride_seattle/provider/route_provider.dart';
 
 import '../classes/itinerary.dart';
 import '../classes/place.dart';
+import '../classes/plan.dart';
 import '../provider/state_info.dart';
 
 class SearchBox extends StatefulWidget {
@@ -25,7 +26,6 @@ class _SearchBoxState extends State<SearchBox> {
   Widget build(BuildContext context) {
     final otp = OtpHelper();
     final stateInfo = Provider.of<StateInfo>(context);
-    final routeProvider = Provider.of<RouteProvider>(context);
     return Column(
       children: [
         TextField(
@@ -62,48 +62,45 @@ class _SearchBoxState extends State<SearchBox> {
           ConstrainedBox(
             constraints: BoxConstraints(
                 maxHeight: MediaQuery.of(context).size.height * .3),
-            child: ListView.builder(
+            child: ListView.separated(
               shrinkWrap: true,
               itemCount: places.length,
               itemBuilder: ((context, index) {
                 return ListTile(
-                  title: Text(places[index].displayName),
+                  title: Text(places[index].displayName, overflow: TextOverflow.ellipsis,),
                   onTap: () async {
-                    routeProvider.clearPolylines();
                     if (mounted) {
-                      List<LatLng> points = [];
-                      int id = 0;
-                      List<PointLatLng> coords = [];
                       String start =
                           '${stateInfo.position.latitude}, ${stateInfo.position.longitude}';
                       String finish =
                           '${places[index].lat}, ${places[index].lon}';
-                      List<Itinerary> trip =
-                          await otp.getTripPlan(start, finish);
-
-                      for (var leg in trip[1].legs) {
-                        points = [];
-                        coords = PolylinePoints()
-                            .decodePolyline(leg.legGeometry.points);
-                        for (var coord in coords) {
-                          points.add(LatLng(coord.latitude, coord.longitude));
-                        }
-                        if (leg.mode == 'WALK') {
-                          routeProvider.setPolyLines(
-                            points,
-                            color: Colors.blue,
-                            id: id.toString(),
-                          );
-                        } else {
-                          routeProvider.setPolyLines(points,
-                              color: Colors.orange, id: id.toString());
-                        }
-                        id++;
-                      }
+                      stateInfo.plan = await otp.getTripPlan(start, finish);
+                      stateInfo.showMarkerInfo = false;
+                      stateInfo.showVehicleInfo = false;
+                      stateInfo.showTripInfo = true;
+                      stateInfo.mapController.animateCamera(
+                        CameraUpdate.newCameraPosition(
+                          CameraPosition(
+                            target: LatLng(stateInfo.position.latitude,
+                                stateInfo.position.longitude),
+                            zoom: 16,
+                          ),
+                        ),
+                      );
+                      setState(() {
+                        places = [];
+                      });
+                      if (context.mounted) FocusScope.of(context).unfocus();
                     }
                   },
                 );
               }),
+              separatorBuilder: (BuildContext context, int index) {
+                return const Divider(
+                  height: 1,
+                  thickness: 1,
+                );
+              },
             ),
           )
       ],
