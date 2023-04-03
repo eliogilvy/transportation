@@ -5,7 +5,7 @@ class RideSeattleTheme {
     return ThemeData(
         primarySwatch: Colors.blue,
         primaryColor: Colors.blue[900],
-        primaryColorLight: Color.fromARGB(255, 89, 167, 231),
+        primaryColorLight: Colors.blue,
         primaryColorDark: Colors.blue[800],
         canvasColor: Colors.white,
         scaffoldBackgroundColor: Colors.white,

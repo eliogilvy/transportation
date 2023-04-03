@@ -70,6 +70,7 @@ dependencies:
   firebase: ^9.0.3
   google_sign_in: ^6.0.2
   permission_handler: ^10.2.0
+  pinput: ^2.2.31
 
 dev_dependencies:
 
@@ -105,13 +106,10 @@ flutter:
      - assets/images/stops/
   
   fonts:
-    - family: route
-      fonts:
-        - asset: assets/fonts/route-font.ttf
     - family: route2
       fonts:
         - asset: assets/fonts/Nunito-Regular.ttf
-    - family: roboto
+    - family: route
       fonts:
         - asset: assets/fonts/roboto-font.ttf
 

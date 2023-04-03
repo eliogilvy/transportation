@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:ride_seattle/provider/firebase_provider.dart';
+import 'package:ride_seattle/widgets/enter_phone_number.dart';
 import '../classes/auth.dart';
 import '../classes/firebase.dart';
 
@@ -114,48 +116,62 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Widget _phoneAuth(Auth auth) {
+    return TextButton(
+      style: ButtonStyle(
+        backgroundColor:
+            MaterialStateProperty.all(const Color.fromARGB(255, 66, 133, 244)),
+      ),
+      onPressed: () {
+        context.push('/phone_auth');
+      },
+      child: Text(
+        'Use a phone number',
+        style: Theme.of(context).textTheme.bodyMedium,
+      ),
+    );
+  }
+
   Widget _googleSignIn(Auth auth) {
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
-        child: TextButton(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(
-              const Color.fromARGB(255, 66, 133, 244),
+    return Container(
+      padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
+      child: TextButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(
+            const Color.fromARGB(255, 66, 133, 244),
+          ),
+          elevation: MaterialStateProperty.all<double>(5),
+        ),
+        onPressed: () async {
+          await auth.signInWithGoogle();
+          setState(() {});
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              height: 40.0,
+              width: 40,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/google_sign_in.png'),
+                  fit: BoxFit.cover,
+                ),
+                shape: BoxShape.rectangle,
+              ),
             ),
-            elevation: MaterialStateProperty.all<double>(5),
-          ),
-          onPressed: () async {
-            await auth.signInWithGoogle();
-            setState(() {});
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                height: 40.0,
-                width: 40,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/google_sign_in.png'),
-                    fit: BoxFit.cover,
-                  ),
-                  shape: BoxShape.rectangle,
-                ),
+            const SizedBox(
+              width: 24,
+            ),
+            const Text(
+              "Sign in with Google",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontFamily: 'route',
               ),
-              const SizedBox(
-                width: 24,
-              ),
-              const Text(
-                "Sign in with Google",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontFamily: 'roboto',
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );
@@ -165,39 +181,30 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final fire = Provider.of<FireProvider>(context);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: _title(),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-            image: AssetImage('assets/images/skyline.jpg'),
-            fit: BoxFit.cover,
-          )),
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(height: 140),
-              Image.asset('assets/images/logo.png'),
-              Container(
-                color: Colors.white,
-                child: Column(
-                  children: [
-                    _emailField('Email', emailController),
-                    _passwordField('Password', passwordController),
-                    _errorMessage(),
-                    _submitButton(fire.auth),
-                    _loginOrRegisterButton(),
-                    _googleSignIn(fire.auth),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(height: 140),
+          Image.asset('assets/images/logo.png'),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              color: Colors.white,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  _googleSignIn(fire.auth),
+                  _phoneAuth(fire.auth),
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

@@ -28,6 +28,24 @@ class Auth {
         email: email, password: password);
   }
 
+  Future<void> signInWithPhone(String phone) async {
+    await firebaseAuth.verifyPhoneNumber(
+      phoneNumber: phone,
+      verificationCompleted: (credential) async {
+        await firebaseAuth.signInWithCredential(credential);
+      },
+      verificationFailed: (e) async {
+        if (e.code == 'invalid-phone-number') {
+          print('Invalid phone number.');
+        } else {
+          print('Something went wrong.');
+        }
+      },
+      codeSent: (verificationId, resendToken) {},
+      codeAutoRetrievalTimeout: (verificationId) {},
+    );
+  }
+
   Future<void> signInWithGoogle() async {
     print('sign in');
     GoogleSignIn _googleSignIn = GoogleSignIn(
