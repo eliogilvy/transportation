@@ -84,11 +84,16 @@ final _router = GoRouter(
     GoRoute(
       name: 'phone_auth',
       path: '/phone_auth',
-      builder: (context, state) => const PhoneSignIn(),
+      builder: (context, state) => PhoneSignIn(),
     ),
     GoRoute(
       path: '/otp',
-      builder: (context, state) => const OtpScreen(),
+      builder: (context, state) {
+        final map = state.extra as Map;
+        final callback = map['callback'] as Function;
+        final verificationId = map['verificationId'] as String;
+        return OtpScreen(callback: callback, verificationId: verificationId);
+      },
     ),
   ],
 );

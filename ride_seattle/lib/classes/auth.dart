@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class Auth {
@@ -28,11 +30,14 @@ class Auth {
         email: email, password: password);
   }
 
-  Future<void> signInWithPhone(String phone) async {
+  Future<void> signInWithPhone(BuildContext context, String phone) async {
     await firebaseAuth.verifyPhoneNumber(
       phoneNumber: phone,
       verificationCompleted: (credential) async {
         await firebaseAuth.signInWithCredential(credential);
+        if (context.mounted) {
+          context.go('/');
+        }
       },
       verificationFailed: (e) async {
         if (e.code == 'invalid-phone-number') {
@@ -41,9 +46,26 @@ class Auth {
           print('Something went wrong.');
         }
       },
-      codeSent: (verificationId, resendToken) {},
+      codeSent: (verificationId, resendToken) {
+        context.push('/otp',
+            extra: {'callback': verifyOtp, 'verificationId': verificationId});
+      },
       codeAutoRetrievalTimeout: (verificationId) {},
     );
+  }
+
+  void verifyOtp(
+      BuildContext context, String verificationId, String userOtp) async {
+    final credential = PhoneAuthProvider.credential(
+        verificationId: verificationId, smsCode: userOtp);
+    try {
+      await firebaseAuth.signInWithCredential(credential);
+      if (context.mounted) {
+        context.go('/');
+      }
+    } catch (e) {
+      context.go('/');
+    }
   }
 
   Future<void> signInWithGoogle() async {
