@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -120,6 +121,11 @@ class StateInfo with ChangeNotifier {
     return points;
   }
 
+  void addStopRating(String stopId, String rating) {
+    _stops[stopId]!.safetyRating = rating;
+    notifyListeners();
+  }
+
   void updateStops() {
     _markers.clear();
     _stops.removeWhere((key, value) {
@@ -166,7 +172,8 @@ class StateInfo with ChangeNotifier {
         .findElements("routeId")
         .map((e) => e.text)
         .toList();
-    if (routeFilter.isEmpty || !checkLists(routeIds.toSet(), routeFilter.toSet())) {
+    if (routeFilter.isEmpty ||
+        !checkLists(routeIds.toSet(), routeFilter.toSet())) {
       _stops[id] = parseStop(stop);
       var filePath = 'assets/images/stops/bus-stop.png';
       if (direction != null) {
@@ -323,7 +330,7 @@ class StateInfo with ChangeNotifier {
     var marker = Marker(
       markerId: MarkerId(id),
       position: location,
-      //infoWindow: markerWindow(name),
+      // infoWindow: markerWindow(id) ?? InfoWindow.noText,
       icon: markerIcon,
       onTap: () async {
         function(id);
@@ -353,6 +360,17 @@ class StateInfo with ChangeNotifier {
     );
     _markers[id] = marker;
     notifyListeners();
+  }
+
+  InfoWindow? markerWindow(String id) {
+    Stop? stop = _stops[id];
+    if (stop != null) {
+      return InfoWindow(
+        title: stop.name,
+        snippet: stop.safetyRating ?? 'No ratings yet',
+      );
+    }
+    return null;
   }
 
   void removeMarker(String? id) {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../styles/tile_style.dart';
 
 class RouteBox extends StatefulWidget {
   final String text;

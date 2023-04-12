@@ -72,7 +72,7 @@ class _RouteTileState extends State<RouteTile> {
                   right: 0,
                   child: IconButton(
                     onPressed: () {
-                      fire.removeData(widget.routeId);
+                      fire.removeRoute(widget.routeId);
                     },
                     icon: Icon(
                       Icons.delete_forever_outlined,

@@ -34,7 +34,7 @@ Future<void> main() async {
   Hive.registerAdapter(OldStopsAdapter());
   //openboxes
   history = await Hive.openBox('old_stops');
-  var fb = FirebaseFirestore.instance.collection('users');
+  var fb = FirebaseFirestore.instance;
 
   GeolocatorPlatform locator = GeolocatorPlatform.instance;
   Client client = Client();

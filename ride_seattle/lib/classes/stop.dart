@@ -16,6 +16,7 @@ class Stop {
   final int locationType;
   final List<String> routeIds;
   final Map<String, ArrivalAndDeparture> _arrivalAndDeparture = {};
+  String? safetyRating;
 
   Stop({
     required this.stopId,

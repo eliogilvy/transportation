@@ -45,7 +45,7 @@ class _FavoriteButtonState extends State<FavoriteButton> {
                   ),
                   onPressed: () async {
                     // storage.addRoute(widget.routeId);
-                    fire.uploadingData(widget.routeId, widget.routeName);
+                    fire.addRoute(widget.routeId, widget.routeName);
                   },
                 )
               : IconButton(
@@ -54,7 +54,7 @@ class _FavoriteButtonState extends State<FavoriteButton> {
                     Icons.star,
                   ),
                   onPressed: () async {
-                    fire.removeData(widget.routeId);
+                    fire.removeRoute(widget.routeId);
                   },
                 );
         }
