@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:ride_seattle/provider/firebase_provider.dart';
 
@@ -17,6 +18,16 @@ class RouteTile extends StatefulWidget {
 }
 
 class _RouteTileState extends State<RouteTile> {
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    setState(() {
+      loading = false;
+    });
+  }
+
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
     final fire = Provider.of<FireProvider>(context);
@@ -38,6 +49,10 @@ class _RouteTileState extends State<RouteTile> {
               ),
             ),
             onTap: () async {
+              setState(() {
+                loading = true;
+              });
+
               List<LatLng> routeStops =
                   await stateInfo.getRoutePolyline(widget.routeId);
               stateInfo.routeFilter = [];
@@ -81,6 +96,9 @@ class _RouteTileState extends State<RouteTile> {
                   ),
                 )
               : const SizedBox.shrink(),
+          loading
+              ? Center(child: LoadingAnimationWidget.inkDrop(color: Colors.white, size: 60))
+              : Container(),
         ],
       ),
     );

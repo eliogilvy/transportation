@@ -98,7 +98,8 @@ class _MapScreenState extends State<MapScreen> {
                           children: [
                             Text(
                               "Find a route",
-                              style: Theme.of(context).textTheme.bodyMedium,
+                              style:
+                                  Theme.of(context).primaryTextTheme.bodyMedium,
                             ),
                             Expanded(
                               child: Align(
