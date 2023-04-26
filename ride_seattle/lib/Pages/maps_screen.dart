@@ -75,13 +75,13 @@ class _MapScreenState extends State<MapScreen> {
                 },
               ),
         actions: [
-          IconButton(
-              onPressed: () => setState(
-                    () {
-                      search = true;
-                    },
-                  ),
-              icon: const Icon(Icons.search)),
+          // IconButton(
+          //     onPressed: () => setState(
+          //           () {
+          //             search = true;
+          //           },
+          //         ),
+          //     icon: const Icon(Icons.search)),
           IconButton(
             onPressed: () {
               showDialog(
@@ -140,18 +140,18 @@ class _MapScreenState extends State<MapScreen> {
         },
         body: Column(
           children: [
-            search
-                ? Container(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SearchBox(callback: () {
-                      if (mounted) {
-                        setState(() {
-                          search = false;
-                        });
-                      }
-                    }),
-                  )
-                : Container(),
+            // search
+            //     ? Container(
+            //         padding: const EdgeInsets.all(8.0),
+            //         child: SearchBox(callback: () {
+            //           if (mounted) {
+            //             setState(() {
+            //               search = false;
+            //             });
+            //           }
+            //         }),
+            //       )
+            //     : Container(),
             Expanded(
               child: Stack(
                 fit: StackFit.expand,

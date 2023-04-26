@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 
-class OtpScreen extends StatelessWidget {
+class OtpScreen extends StatefulWidget {
   const OtpScreen(
       {Key? key, required this.callback, required this.verificationId})
       : super(key: key);
   final Function callback;
   final String verificationId;
 
+  @override
+  State<OtpScreen> createState() => _OtpScreenState();
+}
+
+class _OtpScreenState extends State<OtpScreen> {
+  bool error = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,6 +22,7 @@ class OtpScreen extends StatelessWidget {
       ),
       body: Center(
         child: Pinput(
+          errorText: error ? 'Try again' : null,
           closeKeyboardWhenCompleted: true,
           autofocus: true,
           keyboardType: TextInputType.number,
@@ -32,11 +39,19 @@ class OtpScreen extends StatelessWidget {
             ),
           ),
           onCompleted: (value) {
-            callback(context, verificationId, value);
+            widget.callback(context, widget.verificationId, value, otpFail);
           },
         ),
       ),
     );
+  }
+
+  void otpFail() {
+    if (context.mounted) {
+      setState(() {
+        error = true;
+      });
+    }
   }
 
   Widget buildOtpBox(BuildContext context) {

@@ -77,21 +77,21 @@ Widget buildMenuItems(BuildContext context) {
             context.push('/history');
           },
         ),
-        Divider(color: Theme.of(context).dividerColor),
-        ListTile(
-          key: const ValueKey("pay"),
-          leading: Icon(
-            Icons.payment,
-            color: Theme.of(context).primaryColorDark,
-          ),
-          title: Text(
-            'Buy a Ticket',
-            style: Theme.of(context).primaryTextTheme.bodyMedium,
-          ),
-          onTap: () {
-            context.push('/payment');
-          },
-        ),
+        // Divider(color: Theme.of(context).dividerColor),
+        // ListTile(
+        //   key: const ValueKey("pay"),
+        //   leading: Icon(
+        //     Icons.payment,
+        //     color: Theme.of(context).primaryColorDark,
+        //   ),
+        //   title: Text(
+        //     'Buy a Ticket',
+        //     style: Theme.of(context).primaryTextTheme.bodyMedium,
+        //   ),
+        //   onTap: () {
+        //     context.push('/payment');
+        //   },
+        // ),
 
         Expanded(child: Container()),
         Divider(color: Theme.of(context).dividerColor),
@@ -105,8 +105,8 @@ Widget buildMenuItems(BuildContext context) {
             'Sign out',
             style: Theme.of(context).primaryTextTheme.bodyMedium,
           ),
-          onTap: () async {
-            await fire.auth.signOut();
+          onTap: () {
+            fire.auth.signOut();
           },
         ),
       ],

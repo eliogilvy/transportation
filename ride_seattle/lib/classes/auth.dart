@@ -30,8 +30,10 @@ class Auth {
         email: email, password: password);
   }
 
-  Future<void> signInWithPhone(BuildContext context, String phone) async {
+  Future<void> signInWithPhone(BuildContext context, String phone,
+      Function failure) async {
     await firebaseAuth.verifyPhoneNumber(
+      timeout: const Duration(seconds: 60),
       phoneNumber: phone,
       verificationCompleted: (credential) async {
         await firebaseAuth.signInWithCredential(credential);
@@ -39,11 +41,13 @@ class Auth {
           context.go('/');
         }
       },
-      verificationFailed: (e) async {
-        if (e.code == 'invalid-phone-number') {
-          print('Invalid phone number.');
-        } else {
-          print('Something went wrong.');
+      verificationFailed: (e) {
+        if (context.mounted) {
+          if (e.code == 'invalid-phone-number') {
+            failure('Invalid number. Please try again');
+          } else {
+            failure('Unknown error. Please try again.');
+          }
         }
       },
       codeSent: (verificationId, resendToken) {
@@ -54,8 +58,8 @@ class Auth {
     );
   }
 
-  void verifyOtp(
-      BuildContext context, String verificationId, String userOtp) async {
+  void verifyOtp(BuildContext context, String verificationId, String userOtp,
+      Function otpFail) async {
     final credential = PhoneAuthProvider.credential(
         verificationId: verificationId, smsCode: userOtp);
     try {
@@ -64,12 +68,11 @@ class Auth {
         context.go('/');
       }
     } catch (e) {
-      context.go('/');
+      otpFail();
     }
   }
 
   Future<void> signInWithGoogle() async {
-    print('sign in');
     GoogleSignIn _googleSignIn = GoogleSignIn(
       scopes: [
         'email',

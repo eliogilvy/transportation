@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ride_seattle/helpers/otp.dart';
+import 'package:ride_seattle/helpers/otp_helper.dart';
 
 import '../provider/state_info.dart';
 import 'itinerary_list.dart';

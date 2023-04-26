@@ -73,6 +73,10 @@ dependencies:
   pinput: ^2.2.31
   flutter_rating_bar: ^4.0.1
   cloud_functions: ^4.1.0
+  loading: ^1.0.2
+  jumping_dot: ^0.0.4
+  loading_animation_widget: ^1.2.0+4
+  mask_text_input_formatter: ^2.4.0
 
 dev_dependencies:
 

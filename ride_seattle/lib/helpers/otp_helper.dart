@@ -23,7 +23,6 @@ class OtpHelper {
     String date = DateFormat('MM-dd-yyyy').format(DateTime.now());
     String url =
         '${otpBase}plan?fromPlace=$from&toPlace=$to&time=$time&date=$date&mode=TRANSIT,WALK';
-    print('getting $url');
     Response res = await get(Uri.parse(url));
     Map<String, dynamic> body = jsonDecode(res.body);
     Map<String, dynamic> plan = body['plan'];
@@ -41,7 +40,6 @@ class OtpHelper {
   Future<List<Place>> getAddresses(String query) async {
     String url =
         '${addressBase}search?q=$query&city=Seattle&state=Washington&format=$format&viewbox=$view&limit=$limit';
-    print('getting $url');
     Response res = await get(Uri.parse(url));
     List addressList = jsonDecode(res.body);
 

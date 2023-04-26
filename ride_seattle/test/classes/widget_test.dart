@@ -91,7 +91,7 @@ void main() {
               ChangeNotifierProvider(create: (context) => RouteProvider()),
               ChangeNotifierProvider(
                 create: (context) => FireProvider(
-                  fb: FakeFirebaseFirestore().collection('users'),
+                  fb: FakeFirebaseFirestore(),
                   auth: Auth(
                     firebaseAuth: auth,
                   ),
@@ -209,7 +209,7 @@ void main() {
               ChangeNotifierProvider(create: (context) => RouteProvider()),
               ChangeNotifierProvider(
                 create: (context) => FireProvider(
-                  fb: FakeFirebaseFirestore().collection('users'),
+                  fb: FakeFirebaseFirestore(),
                   auth: Auth(
                     firebaseAuth: auth,
                   ),
@@ -276,7 +276,7 @@ void main() {
                 ChangeNotifierProvider(create: (context) => RouteProvider()),
                 ChangeNotifierProvider(
                   create: (context) => FireProvider(
-                    fb: FakeFirebaseFirestore().collection('users'),
+                    fb: FakeFirebaseFirestore(),
                     auth: Auth(
                       firebaseAuth: auth,
                     ),
@@ -444,7 +444,7 @@ void main() {
                 ChangeNotifierProvider(create: (context) => RouteProvider()),
                 ChangeNotifierProvider(
                   create: (context) => FireProvider(
-                    fb: FakeFirebaseFirestore().collection('users'),
+                    fb: FakeFirebaseFirestore(),
                     auth: Auth(
                       firebaseAuth: auth,
                     ),
@@ -592,7 +592,7 @@ void main() {
                 ),
                 ChangeNotifierProvider(
                   create: (context) => FireProvider(
-                    fb: FakeFirebaseFirestore().collection('users'),
+                    fb: FakeFirebaseFirestore(),
                     auth: Auth(
                       firebaseAuth: auth,
                     ),

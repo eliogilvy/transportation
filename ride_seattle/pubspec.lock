@@ -735,6 +735,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.8.0"
+  jumping_dot:
+    dependency: "direct main"
+    description:
+      name: jumping_dot
+      sha256: "298c3904c83bd20b79fe93175383b2ec514e9318784bedc011858568869e090f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.4"
   lints:
     dependency: transitive
     description:
@@ -743,6 +751,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  loading:
+    dependency: "direct main"
+    description:
+      name: loading
+      sha256: a34e708ddafd2b6939a0e6544cce7311244cd17067c72da3401de2319527a424
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
+  loading_animation_widget:
+    dependency: "direct main"
+    description:
+      name: loading_animation_widget
+      sha256: "1901682600273a966c34cf44a85fc5355da92a8d08a8a43c11adc4e471993e3a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0+4"
   location:
     dependency: "direct main"
     description:
@@ -783,6 +807,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
+  mask_text_input_formatter:
+    dependency: "direct main"
+    description:
+      name: mask_text_input_formatter
+      sha256: "19bb7809c3c2559277e95521b3ee421e1409eb2cc85efd2feb191696c92490f4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.4.0"
   matcher:
     dependency: transitive
     description:
