@@ -21,6 +21,7 @@ class StateInfo with ChangeNotifier {
     getPosition();
   }
 
+  Routes routeCalls = Routes();
   Client client;
   GeolocatorPlatform locator;
   String _radius = "0";
@@ -108,7 +109,7 @@ class StateInfo with ChangeNotifier {
     List<LatLng> points = [];
 
     Response res =
-        await client.get(Uri.parse(Routes.getStopsForRoute(routeId)));
+        await client.get(Uri.parse(routeCalls.getStopsForRoute(routeId)));
 
     var document = XmlDocument.parse(res.body);
     var polylines = document.findAllElements('encodedPolyline').first;
@@ -145,7 +146,7 @@ class StateInfo with ChangeNotifier {
 
   Future<void> getStopsForLocation(String lat, String lon) async {
     Response res = await client
-        .get(Uri.parse(Routes.getStopsForLocation(lat, lon, _radius)));
+        .get(Uri.parse(routeCalls.getStopsForLocation(lat, lon, _radius)));
     final document = XmlDocument.parse(res.body);
     var stops = document.findAllElements('stop');
     for (var stop in stops) {
@@ -223,7 +224,7 @@ class StateInfo with ChangeNotifier {
 
   Future<void> getRoutesForLocation(String lat, String lon) async {
     Response res = await client
-        .get(Uri.parse(Routes.getRoutesForLocation(lat, lon, _radius)));
+        .get(Uri.parse(routeCalls.getRoutesForLocation(lat, lon, _radius)));
     final document = XmlDocument.parse(res.body);
     final routes = document.findAllElements('route');
     for (var route in routes) {
@@ -236,7 +237,7 @@ class StateInfo with ChangeNotifier {
     if (_stops.containsKey(id)) {
       stop = _stops[id]!;
     } else {
-      Response res = await client.get(Uri.parse(Routes.getStop(id)));
+      Response res = await client.get(Uri.parse(routeCalls.getStop(id)));
 
       var document = XmlDocument.parse(res.body);
       var s = document.findAllElements('stop');

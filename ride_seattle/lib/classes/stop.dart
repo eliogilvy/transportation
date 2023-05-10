@@ -114,7 +114,7 @@ class Stop {
 
   Future<void> getArrivalAndDeparture(Client client) async {
     Response res =
-        await client.get(Uri.parse(Routes.getArrivalsAndDepartures(stopId)));
+        await client.get(Uri.parse(Routes().getArrivalsAndDepartures(stopId)));
     final document = XmlDocument.parse(res.body);
     var arrivalAndDepartureNode =
         document.findAllElements("arrivalAndDeparture");

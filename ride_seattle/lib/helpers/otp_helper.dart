@@ -10,7 +10,7 @@ import '../classes/plan.dart';
 
 class OtpHelper {
   OtpHelper();
-  final String key = Key.otp;
+  final String key = Key().getOTP();
   final String otpBase = 'http://10.0.0.60:8080/otp/routers/default/';
   final String addressBase = 'http://nominatim.openstreetmap.org/';
   final String view = '-122.435,47.495,-122.234,47.734';
