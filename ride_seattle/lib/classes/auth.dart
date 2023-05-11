@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +19,16 @@ class Auth {
   Future<void> signInWithEmailAndPassword({
     required String email,
     required String password,
+    required Function failure,
+    required Function success,
   }) async {
-    await firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
+    try {
+      await firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+      success();
+    } catch (e) {
+      failure();
+    }
   }
 
   Future<void> createUserWithEmailAndPassword({
@@ -30,8 +39,8 @@ class Auth {
         email: email, password: password);
   }
 
-  Future<void> signInWithPhone(BuildContext context, String phone,
-      Function failure) async {
+  Future<void> signInWithPhone(
+      BuildContext context, String phone, Function failure) async {
     await firebaseAuth.verifyPhoneNumber(
       timeout: const Duration(seconds: 60),
       phoneNumber: phone,

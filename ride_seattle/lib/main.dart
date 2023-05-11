@@ -15,6 +15,7 @@ import 'package:ride_seattle/provider/local_storage_provider.dart';
 import 'package:ride_seattle/provider/route_provider.dart';
 import 'package:ride_seattle/styles/theme.dart';
 import 'package:ride_seattle/widgets/enter_phone_number.dart';
+import 'Screens/admin.dart';
 import 'Screens/favorites_screen.dart';
 import 'Screens/payment_screen.dart';
 import 'classes/auth.dart';
@@ -96,6 +97,10 @@ final _router = GoRouter(
         final verificationId = map['verificationId'] as String;
         return OtpScreen(callback: callback, verificationId: verificationId);
       },
+    ),
+    GoRoute(
+      path: '/admin',
+      builder: (context, state) => AdminScreen(),
     ),
   ],
 );

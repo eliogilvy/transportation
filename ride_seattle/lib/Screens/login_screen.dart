@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:ride_seattle/provider/firebase_provider.dart';
-import 'package:ride_seattle/widgets/enter_phone_number.dart';
 import '../classes/auth.dart';
 import '../classes/firebase.dart';
 
@@ -21,17 +20,6 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  Future<void> signInWithEmailAndPassword(Auth auth) async {
-    try {
-      await auth.signInWithEmailAndPassword(
-          email: emailController.text, password: passwordController.text);
-    } on FirebaseAuthException catch (e) {
-      setState(() {
-        errorMessage = e.message;
-      });
-    }
-  }
-
   Future<void> createUserWithEmailAndPassword(Auth auth) async {
     try {
       await auth.createUserWithEmailAndPassword(
@@ -46,74 +34,6 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _title() {
     return const Text('Ride Seattle');
-  }
-
-  Widget _entryField(
-      String title, TextEditingController controller, ValueKey key,
-      {bool password = false}) {
-    return TextField(
-      key: key,
-      obscureText: password,
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: title,
-      ),
-    );
-  }
-
-  Widget _passwordField(String title, TextEditingController controller) {
-    return TextField(
-      key: const ValueKey("passwordField"),
-      obscureText: true,
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: title,
-      ),
-    );
-  }
-
-  Widget _emailField(String title, TextEditingController controller) {
-    return TextField(
-      key: const ValueKey("emailField"),
-      obscureText: false,
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: title,
-      ),
-    );
-  }
-
-  Widget _errorMessage() {
-    return Text(
-      errorMessage == '' ? '' : 'Error ? $errorMessage',
-      key: const ValueKey('error_message'),
-    );
-  }
-
-  Widget _submitButton(Auth auth) {
-    return ElevatedButton(
-      key: const ValueKey("submit_login_Register_Button"),
-      onPressed: () {
-        if (isLogin) {
-          signInWithEmailAndPassword(auth);
-        } else {
-          createUserWithEmailAndPassword(auth);
-        }
-      },
-      child: Text(isLogin ? 'Login' : 'Register'),
-    );
-  }
-
-  Widget _loginOrRegisterButton() {
-    return TextButton(
-      key: const ValueKey("login_or_registerButton"),
-      onPressed: () {
-        setState(() {
-          isLogin = !isLogin;
-        });
-      },
-      child: Text(isLogin ? 'Register instead' : 'Login instead'),
-    );
   }
 
   Widget _phoneAuth(Auth auth) {
@@ -177,6 +97,15 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Widget _adminSignin() {
+    return TextButton(
+      onPressed: () {
+        context.push('/admin');
+      },
+      child: const Text('Admin Sign In'),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final fire = Provider.of<FireProvider>(context);
@@ -200,6 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   _googleSignIn(fire.auth),
                   _phoneAuth(fire.auth),
+                  _adminSignin(),
                 ],
               ),
             ),
