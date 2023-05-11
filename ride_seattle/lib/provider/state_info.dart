@@ -1,12 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart';
-import 'package:ride_seattle/classes/fav_route.dart';
-import 'package:ride_seattle/classes/itinerary.dart';
 import 'package:ride_seattle/classes/old_stops.dart';
 import 'package:ride_seattle/classes/trip_status.dart';
 import 'package:xml/xml.dart';
@@ -42,35 +39,32 @@ class StateInfo with ChangeNotifier {
   Plan? plan;
   int activeIndex = 0;
 
-  
   Set<Circle> get circles => _circles.values.toSet();
   Set<Marker> get markers => _markers.values.toSet();
   List<Stop> get stops => _stops.values.toList();
   List<r.Route> get routes {
     List<r.Route> routeList = _routes.values.toList();
+
     routeList.sort((a, b) {
-      if (a.shortName == null) {
-        return 1; // `a` should come after `b`
-      } else if (b.shortName == null) {
-        return -1; // `a` should come before `b`
-      } else {
-        bool isANumber = int.tryParse(a.shortName!) != null;
-        bool isBNumber = int.tryParse(b.shortName!) != null;
-
-        if (!isANumber && !isBNumber) {
-          // Both elements are not numbers, compare them directly
-          return a.shortName!.compareTo(b.shortName!);
-        } else if (isANumber && isBNumber) {
-          // Both elements are numbers, compare them as numbers
-          return int.parse(a.shortName!).compareTo(int.parse(b.shortName!));
-        } else {
-          // One element is a number, the other is not. The non-number element should be after the number element
-          return isANumber ? -1 : 1;
-        }
-      }
+      return a.shortName == null
+          ? 1
+          : b.shortName == null
+              ? -1
+              : compare(a, b);
     });
-
     return routeList;
+  }
+
+  int compare(r.Route a, r.Route b) {
+    bool isANumber = int.tryParse(a.shortName!) != null;
+    bool isBNumber = int.tryParse(b.shortName!) != null;
+    return !isANumber && !isBNumber
+        ? a.shortName!.compareTo(b.shortName!)
+        : isANumber && isBNumber
+            ? int.parse(a.shortName!).compareTo(int.parse(b.shortName!))
+            : isANumber
+                ? -1
+                : 1;
   }
 
   Position get position => _position;
