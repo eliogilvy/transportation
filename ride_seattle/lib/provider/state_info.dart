@@ -40,7 +40,9 @@ class StateInfo with ChangeNotifier {
   TripStatus? vehicleStatus;
   late GoogleMapController mapController;
   Plan? plan;
+  int activeIndex = 0;
 
+  
   Set<Circle> get circles => _circles.values.toSet();
   Set<Marker> get markers => _markers.values.toSet();
   List<Stop> get stops => _stops.values.toList();

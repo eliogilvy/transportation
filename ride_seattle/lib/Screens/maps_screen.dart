@@ -209,7 +209,7 @@ class _MapScreenState extends State<MapScreen> {
             ),
           ],
         ),
-        floatingActionButton: FloatingActionButton.small(
+        floatingActionButton: FloatingActionButton(
           onPressed: () async {
             GoogleMapController c = await googleMapController.future;
             Position position = stateInfo.position;
@@ -222,7 +222,7 @@ class _MapScreenState extends State<MapScreen> {
               ),
             );
           },
-          child: const Icon(Icons.location_history),
+          child: const Icon(Icons.gps_fixed),
         ),
       ),
     );
