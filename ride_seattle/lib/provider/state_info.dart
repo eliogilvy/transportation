@@ -128,10 +128,10 @@ class StateInfo with ChangeNotifier {
     _stops.removeWhere((key, value) {
       return checkLists(value.routeIds.toSet(), routeFilter.toSet());
     });
-    var filepath = 'assets/images/stops/bus-stop.png';
+    var filepath = 'assets/bus_images/bus-stop.png';
     for (var stop in _stops.values) {
       if (stop.direction != null) {
-        filepath = 'assets/images/stops/bus-stop-${stop.direction}.png';
+        filepath = 'assets/bus_images/bus-stop-${stop.direction}.png';
       }
       addMarker(
           stop.stopId, stop.name, LatLng(stop.lat, stop.lon), getMarkerInfo,
@@ -172,12 +172,12 @@ class StateInfo with ChangeNotifier {
     if (routeFilter.isEmpty ||
         !checkLists(routeIds.toSet(), routeFilter.toSet())) {
       _stops[id] = parseStop(stop);
-      var filePath = 'assets/images/stops/bus-stop.png';
+      var filePath = 'assets/bus_images/bus-stop.png';
       if (direction != null) {
-        filePath = 'assets/images/stops/bus-stop-$direction.png';
+        filePath = 'assets/bus_images/bus-stop-$direction.png';
       }
       addMarker(id, name, LatLng(lat, lon), getMarkerInfo,
-          iconFilepath: filePath);
+          iconFilepath: filePath, direction: direction);
     }
   }
 
@@ -309,52 +309,76 @@ class StateInfo with ChangeNotifier {
   }
 
   Future<BitmapDescriptor> _getImage(String filePath) async {
-    return await BitmapDescriptor.fromAssetImage(
-        const ImageConfiguration(), filePath);
+    try {
+      return await BitmapDescriptor.fromAssetImage(
+          const ImageConfiguration(), filePath);
+    } catch (e) {
+      return BitmapDescriptor.defaultMarker;
+    }
+  }
+
+  Offset getOffset(String direction) {
+    return direction == "N"
+        ? const Offset(.3, 1)
+        : direction == "NE"
+            ? const Offset(0.5, 0.2)
+            : direction == "E"
+                ? const Offset(0.5, .2)
+                : direction == "SE"
+                    ? const Offset(0.8,0.5)
+                    : direction == "S"
+                        ? const Offset(1, 1)
+                        : direction == "SW"
+                            ? const Offset(0.5, 1)
+                            : direction == "W"
+                                ? const Offset(0, 0.8)
+                                : direction == "NW"
+                                    ? const Offset(0.5, 0.8)
+                                    : const Offset(0.5, 1.0);
   }
 
   Future<void> addMarker(
       String id, String name, LatLng location, Function(String) function,
-      {String? iconFilepath, double? x, double? y}) async {
-    BitmapDescriptor markerIcon;
-    iconFilepath ??= 'assets/images/icons8-location-pin-66.png';
-    try {
-      markerIcon = await _getImage(iconFilepath);
-    } catch (e) {
-      markerIcon = await _getImage(iconFilepath);
-    }
+      {String? iconFilepath, String? direction}) async {
+    BitmapDescriptor? markerIcon;
+    iconFilepath != null ? markerIcon = await _getImage(iconFilepath) : null;
+
+    Offset offset = const Offset(0, 0);
+    iconFilepath != null && direction != null
+        ? offset = getOffset(direction)
+        : null;
 
     var marker = Marker(
-      markerId: MarkerId(id),
-      position: location,
-      // infoWindow: markerWindow(id) ?? InfoWindow.noText,
-      icon: markerIcon,
-      onTap: () async {
-        function(id);
-        if (iconFilepath != 'assets/images/bus.png' &&
-            !iconFilepath!.contains('marked')) {
-          _markers.remove("current");
-          String markerFilePath =
-              iconFilepath.substring(0, iconFilepath.indexOf('.'));
-          markerFilePath = "$markerFilePath-marked.png";
+        markerId: MarkerId(id),
+        position: location,
+        // infoWindow: markerWindow(id) ?? InfoWindow.noText,
+        icon: markerIcon ?? BitmapDescriptor.defaultMarker,
+        onTap: () async {
+          function(id);
+          if (iconFilepath != null &&
+              iconFilepath.contains('assets/bus_images')) {
+            _markers.remove('current');
 
-          Box<OldStops> box = await Hive.openBox('old_stops');
-          await box.put(
-            id,
-            OldStops(
-              stopId: id,
-              name: name,
-              lon: location.longitude,
-              lat: location.latitude,
-            ),
-          );
+            Box<OldStops> box = await Hive.openBox('old_stops');
+            await box.put(
+              id,
+              OldStops(
+                stopId: id,
+                name: name,
+                lon: location.longitude,
+                lat: location.latitude,
+              ),
+            );
 
-          addMarker("current", name, location, (p0) => null,
-              iconFilepath: markerFilePath);
-        }
-      },
-      anchor: x == null || y == null ? const Offset(0.5, 1.0) : Offset(x, y),
-    );
+            addMarker(
+              'current',
+              name,
+              location,
+              (p0) => null,
+            );
+          }
+        },
+        anchor: offset);
     _markers[id] = marker;
     notifyListeners();
   }
