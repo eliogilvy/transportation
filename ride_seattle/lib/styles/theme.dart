@@ -29,6 +29,10 @@ class RideSeattleTheme {
           fontSize: 20,
           color: Colors.black,
         ),
+        bodyLarge: TextStyle(
+          fontFamily: 'route',
+          fontSize: 30,
+          color: Colors.black,)
       ),
       textTheme: const TextTheme(
         bodySmall: TextStyle(

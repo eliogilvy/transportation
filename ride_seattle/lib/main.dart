@@ -8,6 +8,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:ride_seattle/Screens/otp.dart';
+import 'package:ride_seattle/Screens/settings.dart';
 import 'package:ride_seattle/Screens/stop_history.dart';
 import 'package:ride_seattle/classes/old_stops.dart';
 import 'package:ride_seattle/provider/firebase_provider.dart';
@@ -98,6 +99,8 @@ final _router = GoRouter(
         return OtpScreen(callback: callback, verificationId: verificationId);
       },
     ),
+    GoRoute(
+        path: '/profile', builder: (context, state) => const ProfileScreen()),
     GoRoute(
       path: '/admin',
       builder: (context, state) => AdminScreen(),

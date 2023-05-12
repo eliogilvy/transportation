@@ -92,6 +92,23 @@ Widget buildMenuItems(BuildContext context) {
         //     context.push('/payment');
         //   },
         // ),
+        Divider(
+          color: Theme.of(context).dividerColor,
+        ),
+        ListTile(
+          key: const ValueKey("profile"),
+          leading: Icon(
+            Icons.person_outline,
+            color: Theme.of(context).primaryColorDark,
+          ),
+          title: Text(
+            'Profile',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          onTap: () {
+            context.go('/profile');
+          },
+        ),
 
         Expanded(child: Container()),
         Divider(color: Theme.of(context).dividerColor),
