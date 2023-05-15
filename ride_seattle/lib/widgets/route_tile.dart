@@ -33,19 +33,21 @@ class _RouteTileState extends State<RouteTile> {
     final fire = Provider.of<FireProvider>(context);
     final stateInfo = Provider.of<StateInfo>(context);
     final routeProvider = Provider.of<RouteProvider>(context);
+    final iconColor = Theme.of(context).colorScheme.onInverseSurface;
+    final deleteColor = Theme.of(context).colorScheme.error;
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
-      color: Theme.of(context).primaryColorLight,
-      elevation: 0,
+      color: Theme.of(context).colorScheme.inversePrimary,
+      elevation: 2,
       child: Stack(
         children: [
           ListTile(
             title: Center(
               child: Text(
                 widget.routeName,
-                style: Theme.of(context).textTheme.bodyLarge,
+                style: Theme.of(context).textTheme.displayLarge,
               ),
             ),
             onTap: () async {
@@ -77,7 +79,7 @@ class _RouteTileState extends State<RouteTile> {
                     }),
                     icon: Icon(
                       Icons.close,
-                      color: Theme.of(context).canvasColor,
+                      color: iconColor,
                     ),
                   ),
                 )
@@ -91,7 +93,7 @@ class _RouteTileState extends State<RouteTile> {
                     },
                     icon: Icon(
                       Icons.delete_forever_outlined,
-                      color: Theme.of(context).canvasColor,
+                      color: deleteColor,
                     ),
                   ),
                 )

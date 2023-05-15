@@ -12,6 +12,7 @@ class RouteList extends StatelessWidget {
   Widget build(BuildContext context) {
     final stateInfo = Provider.of<StateInfo>(context);
     final routeProvider = Provider.of<RouteProvider>(context);
+    final textStyle = Theme.of(context).textTheme.displaySmall;
     return stateInfo.routes.isNotEmpty
         ? Expanded(
             child: SizedBox(
@@ -47,6 +48,7 @@ class RouteList extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: Text(
                         name,
+                        style: textStyle,
                       ),
                     ),
                   );
@@ -54,11 +56,14 @@ class RouteList extends StatelessWidget {
               ),
             ),
           )
-        : const SizedBox(
+        : SizedBox(
             height: 40,
             width: 40,
             child: Center(
-              child: Text('No routes to display'),
+              child: Text(
+                'No routes to display',
+                style: textStyle,
+              ),
             ),
           );
   }

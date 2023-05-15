@@ -34,7 +34,7 @@ class _OtpScreenState extends State<OtpScreen> {
             height: 50,
             textStyle: Theme.of(context).primaryTextTheme.bodyMedium,
             decoration: BoxDecoration(
-              border: Border.all(color: Theme.of(context).primaryColorLight),
+              border: Border.all(color: Theme.of(context).colorScheme.primaryContainer),
               borderRadius: BorderRadius.circular(10),
             ),
           ),
@@ -61,7 +61,7 @@ class _OtpScreenState extends State<OtpScreen> {
       decoration: BoxDecoration(
         border: Border.all(
           width: 2,
-          color: Theme.of(context).primaryColorLight,
+          color: Theme.of(context).colorScheme.primaryContainer,
         ),
       ),
       child: const TextField(

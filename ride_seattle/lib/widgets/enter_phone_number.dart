@@ -121,7 +121,7 @@ class _PhoneSignInState extends State<PhoneSignIn> {
                   return Dialog(
                     backgroundColor: Colors.transparent,
                     child: LoadingAnimationWidget.inkDrop(
-                        color: Theme.of(context).primaryColor, size: 120),
+                        color: Theme.of(context).colorScheme.primary, size: 100),
                   );
                 }),
               );

@@ -285,7 +285,6 @@ void main() {
               ],
               child: MaterialApp(
                 home: Scaffold(body: widget),
-                theme: RideSeattleTheme.theme(),
               )),
         ),
       );
@@ -334,7 +333,6 @@ void main() {
               ],
               child: MaterialApp(
                 home: Scaffold(body: widget),
-                theme: RideSeattleTheme.theme(),
               )),
         ),
       );
@@ -375,7 +373,6 @@ void main() {
               ],
               child: MaterialApp(
                 home: Scaffold(body: widget),
-                theme: RideSeattleTheme.theme(),
               )),
         ),
       );
@@ -407,7 +404,6 @@ void main() {
                 ],
                 child: MaterialApp(
                   home: Scaffold(body: widget),
-                  theme: RideSeattleTheme.theme(),
                 )),
           ),
         );
@@ -453,7 +449,6 @@ void main() {
               ],
               child: MaterialApp(
                 home: Scaffold(body: widget),
-                theme: RideSeattleTheme.theme(),
               )),
         ),
       );

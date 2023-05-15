@@ -19,7 +19,7 @@ class MarkerSheet extends StatelessWidget {
     return DraggableScrollableSheet(
       builder: (context, scrollController) {
         return Container(
-          color: Theme.of(context).colorScheme.background,
+          color: Theme.of(context).colorScheme.primaryContainer,
           child: stateInfo.currentStopInfo != null &&
                   stateInfo
                       .currentStopInfo!.arrivalAndDeparture.values.isNotEmpty

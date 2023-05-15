@@ -48,7 +48,7 @@ class _RouteNameState extends State<RouteName> {
                   child: Text(
                     widget.stop.name,
                     overflow: TextOverflow.clip,
-                    style: Theme.of(context).primaryTextTheme.bodyMedium,
+                    style: Theme.of(context).primaryTextTheme.titleLarge,
                   ),
                 ),
               ),

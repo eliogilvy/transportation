@@ -24,24 +24,27 @@ class _FavoriteButtonState extends State<FavoriteButton> {
   @override
   Widget build(BuildContext context) {
     final fire = Provider.of<FireProvider>(context);
+    final iconColor = Theme.of(context).colorScheme.onPrimaryContainer;
     Stream<QuerySnapshot> stream = fire.routeStream(widget.routeId);
 
     return StreamBuilder<QuerySnapshot>(
       stream: stream,
       builder: (context, snapshot) {
         if (snapshot.data == null) {
-          return const IconButton(
+          return IconButton(
             onPressed: null,
             icon: Icon(
               Icons.star_border,
+              color: iconColor,
             ),
           );
         } else {
           return snapshot.data!.docs.isEmpty
               ? IconButton(
                   tooltip: "Add to favorites",
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.star_border,
+                    color: iconColor,
                   ),
                   onPressed: () async {
                     // storage.addRoute(widget.routeId);
@@ -50,8 +53,9 @@ class _FavoriteButtonState extends State<FavoriteButton> {
                 )
               : IconButton(
                   tooltip: "Remove from favorites",
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.star,
+                    color: iconColor,
                   ),
                   onPressed: () async {
                     fire.removeRoute(widget.routeId);

@@ -32,7 +32,7 @@ class _LoadingWidgetState extends State<LoadingWidget> {
           )
         : Text(
             "No data available, try again.",
-            style: Theme.of(context).primaryTextTheme.bodyMedium,
+            style: Theme.of(context).textTheme.bodyMedium,
           );
   }
 }

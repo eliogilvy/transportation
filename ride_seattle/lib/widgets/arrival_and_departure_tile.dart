@@ -29,44 +29,50 @@ class _ArrivalAndDepartureTileState extends State<ArrivalAndDepartureTile> {
   late LocalStorageProvider localStorage;
   late List<String> favoriteRoutes;
 
-  // Offset _tapPosition = Offset.zero;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // WidgetsBinding.instance.addPostFrameCallback((_) => _onAfterBuild(context));
-  }
-
   @override
   Widget build(BuildContext context) {
     final stateInfo = Provider.of<StateInfo>(context, listen: false);
     final routeProvider = Provider.of<RouteProvider>(context, listen: false);
+    final iconColor = Theme.of(context).colorScheme.onPrimaryContainer;
     return ListTile(
-      // onLongPress: () {
-      //   _showContextMenu(context, widget.adInfo.routeId);
-      // },
       title: Row(
         children: [
-          RouteBox(
-            text: widget.adInfo.routeShortName,
-            maxW: 120,
+          Flexible(
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.inverseSurface,
+                  width: 1.5,
+                ),
+                color: Theme.of(context).colorScheme.surface,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Row(
+                children: [
+                  RouteBox(
+                    text: widget.adInfo.routeShortName,
+                    maxW: 120,
+                  ),
+                  Expanded(
+                    child: Container(),
+                  ),
+                  RouteBox(
+                    text: getPredictedArrivalTime(widget.adInfo),
+                    maxW: 100,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                ],
+              ),
+            ),
           ),
-          Expanded(
-            child: Container(),
-          ),
-          RouteBox(
-            text: getPredictedArrivalTime(widget.adInfo),
-            maxW: 100,
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-
           IconButton(
             tooltip: "Find my vehicle",
-            icon: const Icon(
+            icon: Icon(
               Icons.directions_bus,
+              color: iconColor,
             ),
             onPressed: () async {
               if (widget.adInfo.tripStatus != null) {

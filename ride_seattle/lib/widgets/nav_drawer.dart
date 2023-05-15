@@ -28,51 +28,49 @@ Widget buildHeader(BuildContext context) => Container(
 
 Widget buildMenuItems(BuildContext context) {
   final fire = Provider.of<FireProvider>(context);
+  final iconColor = Theme.of(context).colorScheme.onPrimaryContainer;
+  final containerColor = Theme.of(context).colorScheme.primaryContainer;
+  final textStyle = Theme.of(context).primaryTextTheme.titleLarge;
+  final secondary = Theme.of(context).colorScheme.secondary;
   return Container(
+    color: containerColor,
     padding: const EdgeInsets.all(24),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         //Home
         ListTile(
-          leading: Icon(
-            Icons.home_outlined,
-            color: Theme.of(context).primaryColorDark,
-          ),
+          leading: Icon(Icons.home_outlined, color: iconColor),
           title: Text(
             'Home',
-            style: Theme.of(context).primaryTextTheme.bodyMedium,
+            style: textStyle,
           ),
           onTap: () {
             context.pop();
           },
         ),
-        Divider(color: Theme.of(context).dividerColor),
+        Divider(color: secondary),
         //My Routes
         ListTile(
-          leading: Icon(
-            Icons.star_border,
-            color: Theme.of(context).primaryColorDark,
-          ),
+          leading: Icon(Icons.star_border, color: iconColor),
           title: Text(
             'My Routes',
-            style: Theme.of(context).primaryTextTheme.bodyMedium,
+            style: textStyle,
           ),
           onTap: () {
             context.push('/favoriteRoutes');
           },
         ),
-        Divider(color: Theme.of(context).dividerColor),
+        Divider(
+          color: secondary,
+        ),
         ListTile(
           key: const ValueKey("route_history"),
           leading: Icon(
             Icons.history_rounded,
-            color: Theme.of(context).primaryColorDark,
+            color: iconColor,
           ),
-          title: Text(
-            'History',
-            style: Theme.of(context).primaryTextTheme.bodyMedium,
-          ),
+          title: Text('History', style: textStyle),
           onTap: () {
             context.push('/history');
           },
@@ -92,38 +90,22 @@ Widget buildMenuItems(BuildContext context) {
         //     context.push('/payment');
         //   },
         // ),
-        Divider(
-          color: Theme.of(context).dividerColor,
-        ),
-        ListTile(
-          key: const ValueKey("profile"),
-          leading: Icon(
-            Icons.person_outline,
-            color: Theme.of(context).primaryColorDark,
-          ),
-          title: Text(
-            'Profile',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          onTap: () {
-            context.go('/profile');
-          },
-        ),
 
         Expanded(child: Container()),
-        Divider(color: Theme.of(context).dividerColor),
-        //Sign Out
+        Divider(color: secondary),
+
+        //Settings
         ListTile(
           leading: Icon(
-            Icons.logout,
-            color: Theme.of(context).primaryColorDark,
+            Icons.settings,
+            color: iconColor,
           ),
           title: Text(
-            'Sign out',
-            style: Theme.of(context).primaryTextTheme.bodyMedium,
+            'Settings',
+            style: textStyle,
           ),
           onTap: () {
-            fire.auth.signOut();
+            context.push('/settings');
           },
         ),
       ],

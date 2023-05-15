@@ -27,7 +27,7 @@ class _HistoryTileState extends State<HistoryTile> {
       title: Center(
         child: Text(
           widget.stopName,
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: Theme.of(context).primaryTextTheme.bodyLarge,
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -37,7 +37,7 @@ class _HistoryTileState extends State<HistoryTile> {
               topRight: Radius.circular(10),
               bottomRight: Radius.circular(10),
               bottomLeft: Radius.circular(10))),
-      tileColor: Theme.of(context).primaryColorLight,
+      tileColor: Theme.of(context).colorScheme.inversePrimary,
       onTap: () => setState(
         () {
           widget.tapped = !widget.tapped;
@@ -48,9 +48,9 @@ class _HistoryTileState extends State<HistoryTile> {
               onPressed: () => setState(() {
                     widget.tapped = false;
                   }),
-              icon: const Icon(
+              icon: Icon(
                 Icons.close,
-                color: Colors.white, //Theme.of(context).iconTheme.color,
+                color: Theme.of(context).colorScheme.onPrimary,
               ))
           : null,
       trailing: widget.tapped
@@ -59,9 +59,9 @@ class _HistoryTileState extends State<HistoryTile> {
                 widget.tapped = false;
                 await hive.history.delete(widget.stopId);
               },
-              icon: const Icon(
+              icon: Icon(
                 Icons.delete_forever_outlined,
-                color: Colors.white, //Theme.of(context).iconTheme.color,
+                color: Theme.of(context).colorScheme.onPrimary,
               ),
             )
           : null,

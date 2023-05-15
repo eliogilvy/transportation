@@ -36,10 +36,12 @@ class _TripSheetState extends State<TripSheet> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text('Your trip to ${snapshot.data}',
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .bodyMedium),
+                                  Text(
+                                    'Your trip to ${snapshot.data}',
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .bodyMedium,
+                                  ),
                                   IconButton(
                                       onPressed: () {
                                         widget.callback();

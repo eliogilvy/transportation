@@ -48,13 +48,15 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     final stateInfo = Provider.of<StateInfo>(context, listen: true);
     final routeProvider = Provider.of<RouteProvider>(context, listen: true);
+    final iconColor = Theme.of(context).colorScheme.onSurface;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(
           'Ride Seattle',
-          style: Theme.of(context).appBarTheme.titleTextStyle,
+          style: Theme.of(context).primaryTextTheme.displaySmall,
         ),
         leading: _scaffoldKey.currentState != null && _backButton
             ? IconButton(
@@ -64,10 +66,13 @@ class _MapScreenState extends State<MapScreen> {
                     _scaffoldKey.currentState!.openEndDrawer();
                   });
                 },
-                icon: const Icon(Icons.arrow_back))
+                icon: Icon(Icons.arrow_back, color: iconColor))
             : IconButton(
                 key: const Key('drawer_open'),
-                icon: const Icon(Icons.dehaze),
+                icon: Icon(
+                  Icons.dehaze,
+                  color: iconColor,
+                ),
                 onPressed: () {
                   setState(() {
                     _scaffoldKey.currentState!.openDrawer();
@@ -98,8 +103,9 @@ class _MapScreenState extends State<MapScreen> {
                           children: [
                             Text(
                               "Find a route",
-                              style:
-                                  Theme.of(context).primaryTextTheme.bodyMedium,
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .displaySmall,
                             ),
                             Expanded(
                               child: Align(

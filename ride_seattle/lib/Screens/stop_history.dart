@@ -39,7 +39,7 @@ class _StopHistoryState extends State<StopHistory> {
                   return Center(
                     child: Text(
                       'History is empty',
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                   );
                 }

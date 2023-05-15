@@ -325,7 +325,7 @@ class StateInfo with ChangeNotifier {
             : direction == "E"
                 ? const Offset(0.5, .2)
                 : direction == "SE"
-                    ? const Offset(0.8,0.5)
+                    ? const Offset(0.8, 0.5)
                     : direction == "S"
                         ? const Offset(1, 1)
                         : direction == "SW"
@@ -343,10 +343,8 @@ class StateInfo with ChangeNotifier {
     BitmapDescriptor? markerIcon;
     iconFilepath != null ? markerIcon = await _getImage(iconFilepath) : null;
 
-    Offset offset = const Offset(0, 0);
-    iconFilepath != null && direction != null
-        ? offset = getOffset(direction)
-        : null;
+    Offset offset = const Offset(0.5, 1);
+    direction != null ? offset = getOffset(direction) : const Offset(0.5, 1);
 
     var marker = Marker(
         markerId: MarkerId(id),
@@ -375,6 +373,7 @@ class StateInfo with ChangeNotifier {
               name,
               location,
               (p0) => null,
+              direction: direction,
             );
           }
         },
