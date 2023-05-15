@@ -14,6 +14,7 @@ import 'package:ride_seattle/classes/old_stops.dart';
 import 'package:ride_seattle/provider/firebase_provider.dart';
 import 'package:ride_seattle/provider/local_storage_provider.dart';
 import 'package:ride_seattle/provider/route_provider.dart';
+import 'package:ride_seattle/provider/theme_provider.dart';
 import 'package:ride_seattle/styles/theme.dart';
 import 'package:ride_seattle/widgets/enter_phone_number.dart';
 import 'Screens/admin.dart';
@@ -57,7 +58,10 @@ Future<void> main() async {
             fb: fb,
             auth: Auth(firebaseAuth: FirebaseAuth.instance),
           ),
-        )
+        ),
+        ChangeNotifierProvider<ThemeProvider>(
+          create: (context) => ThemeProvider(),
+        ),
       ],
       child: const RideApp(),
     ),
@@ -100,7 +104,7 @@ final _router = GoRouter(
       },
     ),
     GoRoute(
-        path: '/profile', builder: (context, state) => const ProfileScreen()),
+        path: '/settings', builder: (context, state) => const SettingsScreen()),
     GoRoute(
       path: '/admin',
       builder: (context, state) => AdminScreen(),
@@ -113,10 +117,13 @@ class RideApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<ThemeProvider>(context);
     return MaterialApp.router(
       title: 'Ride App',
       routerConfig: _router,
-      theme: RideSeattleTheme.theme(),
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: theme.themeMode,
     );
   }
 }
