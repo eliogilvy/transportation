@@ -1,23 +1,20 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:ride_seattle/classes/arrival_and_departure.dart';
 import 'package:ride_seattle/provider/route_provider.dart';
 import 'package:ride_seattle/widgets/route_box.dart';
+import '../provider/google_maps_provider.dart';
 import '../provider/local_storage_provider.dart';
 import '../provider/state_info.dart';
 import 'favorite_button.dart';
 
 class ArrivalAndDepartureTile extends StatefulWidget {
   final ArrivalAndDeparture adInfo;
-  final Completer<GoogleMapController> controller;
 
   const ArrivalAndDepartureTile({
     super.key,
     required this.adInfo,
-    required this.controller,
   });
 
   @override
@@ -34,6 +31,7 @@ class _ArrivalAndDepartureTileState extends State<ArrivalAndDepartureTile> {
     final stateInfo = Provider.of<StateInfo>(context, listen: false);
     final routeProvider = Provider.of<RouteProvider>(context, listen: false);
     final iconColor = Theme.of(context).colorScheme.onPrimaryContainer;
+    final mapProvider = Provider.of<MapsProvider>(context, listen: false);
     return ListTile(
       title: Row(
         children: [
@@ -58,7 +56,7 @@ class _ArrivalAndDepartureTileState extends State<ArrivalAndDepartureTile> {
                     child: Container(),
                   ),
                   RouteBox(
-                    text: getPredictedArrivalTime(widget.adInfo),
+                    text: mapProvider.getPredictedArrivalTime(widget.adInfo),
                     maxW: 100,
                   ),
                   const SizedBox(
@@ -83,7 +81,7 @@ class _ArrivalAndDepartureTileState extends State<ArrivalAndDepartureTile> {
 
                 routeProvider.setPolyLines(routeStops);
 
-                findBus(stateInfo);
+                mapProvider.findBus(stateInfo, widget.adInfo);
               }
             },
           ),
@@ -96,43 +94,8 @@ class _ArrivalAndDepartureTileState extends State<ArrivalAndDepartureTile> {
     );
   }
 
-  void findBus(StateInfo stateInfo) async {
-    GoogleMapController c = await widget.controller.future;
-    stateInfo.removeMarker(stateInfo.lastVehicle);
-    stateInfo.vehicleStatus = widget.adInfo.tripStatus!;
-    stateInfo.lastVehicle = widget.adInfo.tripStatus!.activeTripId;
-    stateInfo.addMarker(
-        widget.adInfo.tripStatus!.activeTripId,
-        widget.adInfo.routeShortName,
-        widget.adInfo.tripStatus!.position,
-        stateInfo.getVehicleInfo,
-        iconFilepath: 'assets/images/bus.png');
-    c.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: widget.adInfo.tripStatus!.position,
-          zoom: 16,
-        ),
-      ),
-    );
-  }
+  
+}
 
-  String getPredictedArrivalTime(ArrivalAndDeparture adInfo) {
-    int prediction;
-    if (adInfo.predictedArrivalTime == 0) {
-      prediction = adInfo.scheduledArrivalTime;
-    } else {
-      prediction = adInfo.predictedArrivalTime;
-    }
-    int now = DateTime.now().millisecondsSinceEpoch;
-
-    int difference = prediction - now;
-    int differenceInMinutes = difference ~/ 60000;
-    if (differenceInMinutes == 0) {
-      return "NOW";
-    } else if (differenceInMinutes < 0) {
-      return "Departed";
-    }
-    return "${differenceInMinutes.toString()} min";
-  }
+class MapProvider {
 }

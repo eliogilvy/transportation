@@ -83,6 +83,7 @@ dependencies:
   settings_ui: ^2.0.2
   google_fonts: ^4.0.4
   material_color_utilities: ^0.2.0
+  google_nav_bar: ^5.0.6
 
 dev_dependencies:
 

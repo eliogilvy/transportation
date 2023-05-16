@@ -12,7 +12,9 @@ import 'package:ride_seattle/Screens/settings.dart';
 import 'package:ride_seattle/Screens/stop_history.dart';
 import 'package:ride_seattle/classes/old_stops.dart';
 import 'package:ride_seattle/provider/firebase_provider.dart';
+import 'package:ride_seattle/provider/google_maps_provider.dart';
 import 'package:ride_seattle/provider/local_storage_provider.dart';
+import 'package:ride_seattle/provider/nav_provider.dart';
 import 'package:ride_seattle/provider/route_provider.dart';
 import 'package:ride_seattle/provider/theme_provider.dart';
 import 'package:ride_seattle/styles/theme.dart';
@@ -61,6 +63,12 @@ Future<void> main() async {
         ),
         ChangeNotifierProvider<ThemeProvider>(
           create: (context) => ThemeProvider(),
+        ),
+        ChangeNotifierProvider<MapsProvider>(
+          create: (context) => MapsProvider(),
+        ),
+        ChangeNotifierProvider<NavProvider>(
+          create: (context) => NavProvider(),
         ),
       ],
       child: const RideApp(),

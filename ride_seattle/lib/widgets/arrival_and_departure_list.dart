@@ -9,9 +9,10 @@ import '../provider/state_info.dart';
 
 class ArrivalAndDepartureList extends StatefulWidget {
   final ScrollController scrollController;
-  final Completer<GoogleMapController> controller;
-  const ArrivalAndDepartureList(
-      {super.key, required this.scrollController, required this.controller});
+  const ArrivalAndDepartureList({
+    super.key,
+    required this.scrollController,
+  });
 
   @override
   State<ArrivalAndDepartureList> createState() =>
@@ -31,7 +32,6 @@ class _ArrivalAndDepartureListState extends State<ArrivalAndDepartureList> {
         itemBuilder: (BuildContext context, int index) {
           return ArrivalAndDepartureTile(
             adInfo: stateInfo.currentStopInfo!.arrivalAndDepartureList[index],
-            controller: widget.controller,
           );
         },
         separatorBuilder: (BuildContext context, int index) {

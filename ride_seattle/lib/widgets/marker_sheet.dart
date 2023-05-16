@@ -10,8 +10,7 @@ import '../provider/state_info.dart';
 import 'loading.dart';
 
 class MarkerSheet extends StatelessWidget {
-  final Completer<GoogleMapController> controller;
-  const MarkerSheet({super.key, required this.controller});
+  const MarkerSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +27,6 @@ class MarkerSheet extends StatelessWidget {
                     RouteName(stop: stateInfo.currentStopInfo!),
                     ArrivalAndDepartureList(
                       scrollController: scrollController,
-                      controller: controller,
                     ),
                   ],
                 )

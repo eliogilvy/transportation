@@ -22,6 +22,7 @@ import 'package:ride_seattle/classes/auth.dart';
 import 'package:ride_seattle/classes/stop.dart';
 import 'package:ride_seattle/main.dart';
 import 'package:ride_seattle/provider/firebase_provider.dart';
+import 'package:ride_seattle/provider/google_maps_provider.dart';
 import 'package:ride_seattle/provider/local_storage_provider.dart';
 import 'package:ride_seattle/provider/route_provider.dart';
 import 'package:ride_seattle/provider/state_info.dart';
@@ -424,8 +425,7 @@ void main() {
 
   group('marker sheet', () {
     TestWidgetsFlutterBinding.ensureInitialized();
-    Completer<GoogleMapController> controller = Completer();
-    MarkerSheet markerSheet = MarkerSheet(controller: controller);
+    MarkerSheet markerSheet = MarkerSheet();
     final StateInfo mock = MockStateInfo();
 
     Widget buildTestableWidget(Widget widget) {
@@ -445,6 +445,9 @@ void main() {
                       firebaseAuth: auth,
                     ),
                   ),
+                ),
+                ChangeNotifierProvider(
+                  create: ((context) => MapsProvider()),
                 ),
               ],
               child: MaterialApp(

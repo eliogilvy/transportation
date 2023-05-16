@@ -245,7 +245,6 @@ ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   primaryTextTheme: getPrimaryTextTheme(lightColorScheme.onSurface),
   textTheme: getSecondaryTextTheme(lightColorScheme.onSurface),
-
 );
 
 ThemeData darkTheme = ThemeData(

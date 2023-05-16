@@ -1,13 +1,13 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:ride_seattle/widgets/marker_sheet.dart';
+import 'package:ride_seattle/widgets/nav_bar.dart';
 import 'package:ride_seattle/widgets/search_box.dart';
 import 'package:ride_seattle/widgets/trip_sheet.dart';
+import '../provider/google_maps_provider.dart';
 import '../provider/route_provider.dart';
 import '../provider/state_info.dart';
 import '../widgets/nav_drawer.dart';
@@ -27,7 +27,6 @@ class _MapScreenState extends State<MapScreen> {
   late String _mapStyle;
   bool _backButton = false;
 
-  Completer<GoogleMapController> googleMapController = Completer();
   static const CameraPosition initialCameraPosition =
       CameraPosition(target: LatLng(47.6219, -122.3517), zoom: 16);
 
@@ -48,6 +47,7 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     final stateInfo = Provider.of<StateInfo>(context, listen: true);
     final routeProvider = Provider.of<RouteProvider>(context, listen: true);
+    final mapProvider = Provider.of<MapsProvider>(context, listen: true);
     final iconColor = Theme.of(context).colorScheme.onSurface;
 
     return Scaffold(
@@ -66,7 +66,8 @@ class _MapScreenState extends State<MapScreen> {
                     _scaffoldKey.currentState!.openEndDrawer();
                   });
                 },
-                icon: Icon(Icons.arrow_back, color: iconColor))
+                icon: Icon(Icons.arrow_back, color: iconColor),
+              )
             : IconButton(
                 key: const Key('drawer_open'),
                 icon: Icon(
@@ -80,6 +81,18 @@ class _MapScreenState extends State<MapScreen> {
                 },
               ),
         actions: [
+          stateInfo.routeFilter.isNotEmpty
+              ? IconButton(
+                  onPressed: () {
+                    stateInfo.routeFilter = [];
+                    routeProvider.clearPolylines();
+                  },
+                  icon: Icon(
+                    Icons.refresh_outlined,
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
+                )
+              : Container(),
           // IconButton(
           //     onPressed: () => setState(
           //           () {
@@ -130,7 +143,10 @@ class _MapScreenState extends State<MapScreen> {
                 },
               );
             },
-            icon: const Icon(Icons.filter_alt_outlined),
+            icon: Icon(
+              Icons.filter_alt_outlined,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+            ),
           ),
         ],
       ),
@@ -174,7 +190,7 @@ class _MapScreenState extends State<MapScreen> {
                     zoomControlsEnabled: false,
                     onMapCreated: (GoogleMapController controller) {
                       if (mounted) {
-                        googleMapController.complete(controller);
+                        mapProvider.onMapCreated(controller);
                         controller.setMapStyle(_mapStyle);
                         stateInfo.mapController = controller;
                       }
@@ -191,12 +207,12 @@ class _MapScreenState extends State<MapScreen> {
                       }
                     },
                     onCameraIdle: () {
-                      updateView(stateInfo);
+                      mapProvider.updateView(stateInfo);
                     },
                     polylines: routeProvider.routePolyLine,
                   ),
                   stateInfo.showMarkerInfo
-                      ? MarkerSheet(controller: googleMapController)
+                      ? const MarkerSheet()
                       : stateInfo.showVehicleInfo
                           ? const VehicleSheet()
                           : stateInfo.showTripInfo
@@ -216,54 +232,17 @@ class _MapScreenState extends State<MapScreen> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: Theme.of(context).colorScheme.primary,
           onPressed: () async {
-            GoogleMapController c = await googleMapController.future;
             Position position = stateInfo.position;
-            c.animateCamera(
-              CameraUpdate.newCameraPosition(
-                CameraPosition(
-                  target: LatLng(position.latitude, position.longitude),
-                  zoom: 16,
-                ),
-              ),
-            );
+            mapProvider.go(LatLng(position.latitude, position.longitude));
           },
-          child: const Icon(Icons.gps_fixed),
+          child: Icon(
+            Icons.gps_fixed,
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
         ),
       ),
     );
-  }
-
-  Future<LatLng> getTopOfScreen(GoogleMapController controller) {
-    return controller.getVisibleRegion().then(((value) {
-      return value.northeast;
-    }));
-  }
-
-  Future<LatLng> getBottomOfScreen(GoogleMapController controller) {
-    return controller.getVisibleRegion().then(((value) {
-      return value.southwest;
-    }));
-  }
-
-  Future<LatLng> getCurrentCenter(GoogleMapController controller) {
-    return controller.getVisibleRegion().then((value) {
-      return LatLng((value.southwest.latitude + value.northeast.latitude) / 2,
-          (value.southwest.longitude + value.northeast.longitude) / 2);
-    });
-  }
-
-  Future<void> updateView(StateInfo stateInfo) async {
-    GoogleMapController c = await googleMapController.future;
-    final LatLng center = await getCurrentCenter(c);
-    final LatLng currentCenter = LatLng(center.latitude, center.longitude);
-    await stateInfo.getPosition();
-    stateInfo.setRadius(
-        currentCenter, await getTopOfScreen(c), await getBottomOfScreen(c));
-    stateInfo.getStopsForLocation(
-        currentCenter.latitude.toString(), currentCenter.longitude.toString());
-    stateInfo.getRoutesForLocation(
-        currentCenter.latitude.toString(), currentCenter.longitude.toString());
-    stateInfo.addCircle(currentCenter, 'searchRadius');
   }
 }
